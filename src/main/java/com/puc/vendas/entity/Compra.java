@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bloco {
+public class Compra {
 
 	@Id
 	@GeneratedValue
@@ -26,10 +26,21 @@ public class Bloco {
 	@NotNull(message = "Campo Obrigatorio!")
 	private String nome;
 	
-	public Bloco update(Bloco bloco, Bloco blocoDetails) {
-		bloco.setNome(blocoDetails.getNome());
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String codigoDoProduto;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private int quantidade;
+	
+	public Compra update(Compra compra, Compra detailsCompra) {
+		compra.setNome(detailsCompra.getNome());
+		compra.setCodigoDoProduto(detailsCompra.getCodigoDoProduto());
+		compra.setQuantidade(detailsCompra.getQuantidade());
 		
-		return bloco;
+		return compra;
 	}
 	
+
 }

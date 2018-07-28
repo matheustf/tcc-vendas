@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.puc.vendas.entity.Bloco;
+import com.puc.vendas.entity.Produto;
 
 @Repository
-public interface BlocoRepository extends CrudRepository<Bloco, Long>{
-	public Optional<Bloco> findById(Long id);
+public interface ProdutoRepository extends CrudRepository<Produto, Long>{
+	public Optional<Produto> findById(Long id);
 }

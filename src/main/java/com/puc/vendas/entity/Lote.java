@@ -1,0 +1,56 @@
+package com.puc.vendas.entity;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Lote {
+
+	@Id
+	@GeneratedValue
+	private Long id;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String codigoDoLote;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String dataDoLote;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String codigoDoProduto;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private BigDecimal precoUnitario;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private int quantidade;
+	
+	public Lote update(Lote lote, Lote detailsLote) {
+		lote.setCodigoDoLote(detailsLote.getCodigoDoLote());
+		lote.setCodigoDoProduto(detailsLote.getCodigoDoProduto());
+		lote.setPrecoUnitario(detailsLote.getPrecoUnitario());
+		lote.setQuantidade(detailsLote.getQuantidade());
+
+		return lote;
+	}
+	
+}

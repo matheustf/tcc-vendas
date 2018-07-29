@@ -25,6 +25,10 @@ public interface ProdutoService {
 
 	List<Produto> bucarProdutosPorCodigo(List<String> codigosDosProdutos);
 
-	Produto buscarProdutoPorCodigo(String codigoDoProduto);
+	Produto buscarProdutoPorCodigo(String codigoDoProduto) throws VendaException;
+
+	void atualizarQuantidadeEstocada(String codigoDoProduto, int quantidadeInserida) throws VendaException;
+
+	void atualizarEstoque(List<Compra> compras) throws VendaException;
 
 }

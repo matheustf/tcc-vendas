@@ -26,10 +26,6 @@ public class Compra {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
-	private String nome;
-	
-	@Column(nullable = false)
-	@NotNull(message = "Campo Obrigatorio!")
 	private String codigoDoProduto;
 	
 	@Column(nullable = false)
@@ -41,7 +37,6 @@ public class Compra {
 	private int quantidade;
 	
 	public Compra update(Compra compra, Compra detailsCompra) {
-		compra.setNome(detailsCompra.getNome());
 		compra.setCodigoDoProduto(detailsCompra.getCodigoDoProduto());
 		compra.setQuantidade(detailsCompra.getQuantidade());
 		

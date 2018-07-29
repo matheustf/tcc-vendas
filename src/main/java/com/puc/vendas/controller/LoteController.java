@@ -49,7 +49,7 @@ public class LoteController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<LoteDTO> incluir(@RequestBody @Valid LoteDTO loteDTO) {
+	public ResponseEntity<LoteDTO> incluir(@RequestBody @Valid LoteDTO loteDTO) throws VendaException {
 
 		LoteDTO responseLoteDTO = loteService.incluir(loteDTO);
 		return new ResponseEntity<LoteDTO>(responseLoteDTO, HttpStatus.CREATED);

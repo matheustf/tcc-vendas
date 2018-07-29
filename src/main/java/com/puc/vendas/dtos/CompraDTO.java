@@ -18,9 +18,6 @@ public class CompraDTO {
 	private Long id;
 
 	@NotNull()
-	private String nome;
-	
-	@NotNull()
 	private String codigoDoProduto;
 
 	@NotNull()

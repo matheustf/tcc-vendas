@@ -3,13 +3,18 @@ package com.puc.vendas.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.puc.vendas.enums.FormaDePagamento;
+import com.puc.vendas.enums.StatusDoPedido;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +34,20 @@ public class Pedido {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
-	private String nomeDoComprador;
+	private String codigoDoPedido;
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private String nomeDoComprador;
+	
+	@NotNull(message = "Campo Obrigatorio!")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo", columnDefinition = "enum('CRIADO','AGUARDANDO_PAGAMENTO', 'PAGO','EFETUADO')")
+	private StatusDoPedido statusDoPedido;
+	
+	@NotNull(message = "Campo Obrigatorio!")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "formaDePagamento", columnDefinition = "enum('BOLETO','DEBITO','CREDITO')")
 	private FormaDePagamento formaDePagamento;
 	
 	@Column(nullable = false)
@@ -41,6 +56,11 @@ public class Pedido {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private String dataDoPedido;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Compra> compras;
 	
 	public Pedido update(Pedido pedido, Pedido detailsPedido) {

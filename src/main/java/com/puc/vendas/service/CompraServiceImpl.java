@@ -28,8 +28,9 @@ public class CompraServiceImpl implements CompraService {
 	ProdutoService produtoService;
 
 	@Autowired
-	public CompraServiceImpl(CompraRepository compraRepository) {
+	public CompraServiceImpl(CompraRepository compraRepository, ProdutoService produtoService) {
 		this.compraRepository = compraRepository;
+		this.produtoService = produtoService;
 	}
 
 	@Override
@@ -92,14 +93,14 @@ public class CompraServiceImpl implements CompraService {
 	}
 	
 	@Override
-	public BigDecimal calcularValorDaCompra(List<Compra> compras) {
-		BigDecimal valorTotalPedido = null;
+	public BigDecimal calcularValorDaCompra(List<Compra> compras) throws VendaException {
+		BigDecimal valorTotalPedido = BigDecimal.ZERO;
 		for (Compra compra : compras) {
 			Produto produto = produtoService.buscarProdutoPorCodigo(compra.getCodigoDoProduto());;
 			BigDecimal precoTotalQtd = produto.getPrecoUnitario().multiply(new BigDecimal(compra.getQuantidade()));
 			compra.setValorDaCompra(precoTotalQtd);
 			
-			valorTotalPedido.add(precoTotalQtd);
+			valorTotalPedido = valorTotalPedido.add(precoTotalQtd);
 		}
 		
 		return valorTotalPedido;

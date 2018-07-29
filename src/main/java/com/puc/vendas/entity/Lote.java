@@ -28,6 +28,10 @@ public class Lote {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private String nome;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDoLote;
 	
 	@Column(nullable = false)
@@ -36,12 +40,13 @@ public class Lote {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
-	private int quantidadeInserida;
+	private int quantidade;
 	
 	public Lote update(Lote lote, Lote detailsLote) {
+		lote.setNome(detailsLote.getNome());
 		lote.setCodigoDoLote(detailsLote.getCodigoDoLote());
 		lote.setCodigoDoProduto(detailsLote.getCodigoDoProduto());
-		lote.setQuantidadeInserida(detailsLote.getQuantidadeInserida());
+		lote.setQuantidade(detailsLote.getQuantidade());
 
 		return lote;
 	}

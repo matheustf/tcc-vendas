@@ -56,7 +56,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public ProdutoDTO incluir(ProdutoDTO produtoDTO) {
 		Produto produto = modelMapper().map(produtoDTO, Produto.class);
 		
-		produto.setCodigoDoProduto(Util.gerarCodigo(13).toUpperCase());
+		produto.setCodigoDoProduto(Util.gerarCodigo("PRODUTO",5).toUpperCase());
+		produto.setDataDeCadastro(Util.dataNow());
 
 		produtoRepository.save(produto);
 		
@@ -96,10 +97,13 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public void veficarDisponibilidadeDeProdutos(List<Compra> compras) throws VendaException {
 		for (Compra compra : compras) {
 			
-			Produto produto = produtoRepository.existsProdutoNoEstoque(compra.getCodigoDoProduto(), compra.getQuantidade());
-			if(produto != null) {
-				new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND + ": Produto " + produto.getNome() + "indisponível no momento");
+			Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(compra.getCodigoDoProduto());
+			Produto produto = validarProduto(optional);
+			
+			if(produto.getQuantidadeNoEstoque() < compra.getQuantidade()) {
+				 new VendaException(HttpStatus.NOT_FOUND, Constants.PRODUTO_INDISPONIVEL);
 			}
+
 		}
 	}
 	
@@ -117,12 +121,38 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Override
 	public List<Produto> bucarProdutosPorCodigo(List<String> codigosDosProdutos) {
 		
-		return produtoRepository.bucarProdutosPorCodigo(codigosDosProdutos);
+		return produtoRepository.findByCodigoDoProdutoIn(codigosDosProdutos);
 	}
 
 	@Override
-	public Produto buscarProdutoPorCodigo(String codigoDoProduto) {
+	public Produto buscarProdutoPorCodigo(String codigoDoProduto) throws VendaException {
 		
-		return produtoRepository.findByCodigoDoProduto(codigoDoProduto).get();
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+		
+		Produto produto = validarProduto(optional);
+		
+		return produto;
+	}
+
+	@Override
+	public void atualizarQuantidadeEstocada(String codigoDoProduto, int quantidadeInserida) throws VendaException {
+		Produto produto = buscarProdutoPorCodigo(codigoDoProduto);
+		produto.setQuantidadeNoEstoque(produto.getQuantidadeNoEstoque() + quantidadeInserida);
+		
+		produtoRepository.save(produto);
+	}
+
+	@Override
+	public void atualizarEstoque(List<Compra> compras) throws VendaException {
+		for (Compra compra : compras) {
+			Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(compra.getCodigoDoProduto());
+			
+			Produto produto = validarProduto(optional);
+			
+			produto.setQuantidadeNoEstoque(produto.getQuantidadeNoEstoque() - compra.getQuantidade());
+			
+			produtoRepository.save(produto);
+		}
+		
 	}
 }

@@ -1,5 +1,6 @@
 package com.puc.vendas.dtos;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -30,6 +31,7 @@ public class FornecedorDTO {
 	@NotNull()
 	private String ramoDeAtividade;
 	
+	@Email
 	@NotNull
 	private String email;
 }

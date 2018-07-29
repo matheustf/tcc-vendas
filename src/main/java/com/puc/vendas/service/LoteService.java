@@ -11,7 +11,7 @@ public interface LoteService {
 	
 	LoteDTO consultar(Long id) throws VendaException;
 	
-	LoteDTO incluir(LoteDTO loteDTO);
+	LoteDTO incluir(LoteDTO loteDTO) throws VendaException;
 	
 	LoteDTO atualizar(Long id, LoteDTO loteDTODetails) throws VendaException;
 	

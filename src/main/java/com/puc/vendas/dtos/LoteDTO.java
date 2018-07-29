@@ -18,12 +18,14 @@ public class LoteDTO {
 	@NotNull()
 	private String nome;
 	
+	private String codigoDoLote;
+	
 	private String dataDoLote;
 	
 	@NotNull()
 	private String codigoDoProduto;
 
 	@NotNull()
-	private int quantidadeInserida;
+	private int quantidade;
 	
 }

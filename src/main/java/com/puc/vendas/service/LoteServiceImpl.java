@@ -23,10 +23,13 @@ import com.puc.vendas.utils.Util;
 public class LoteServiceImpl implements LoteService {
 
 	LoteRepository loteRepository;
+	
+	ProdutoService produtoService;
 
 	@Autowired
-	public LoteServiceImpl(LoteRepository loteRepository) {
+	public LoteServiceImpl(LoteRepository loteRepository, ProdutoService produtoService) {
 		this.loteRepository = loteRepository;
+		this.produtoService = produtoService;
 	}
 
 	@Override
@@ -52,10 +55,13 @@ public class LoteServiceImpl implements LoteService {
 	}
 
 	@Override
-	public LoteDTO incluir(LoteDTO loteDTO) {
+	public LoteDTO incluir(LoteDTO loteDTO) throws VendaException {
 		Lote lote = modelMapper().map(loteDTO, Lote.class);
 		
-		lote.setCodigoDoLote(Util.gerarCodigo(8).toUpperCase());
+		lote.setCodigoDoLote(Util.gerarCodigo("LOTE",5).toUpperCase());
+		lote.setDataDoLote(Util.dataNow());
+		
+		produtoService.atualizarQuantidadeEstocada(lote.getCodigoDoProduto(),lote.getQuantidade());
 
 		loteRepository.save(lote);
 		

@@ -15,10 +15,13 @@ import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 import com.puc.vendas.consts.Constants;
 import com.puc.vendas.dtos.PedidoDTO;
+import com.puc.vendas.entity.Compra;
 import com.puc.vendas.entity.Pedido;
-import com.puc.vendas.entity.Produto;
+import com.puc.vendas.enums.FormaDePagamento;
+import com.puc.vendas.enums.StatusDoPedido;
 import com.puc.vendas.exceptions.VendaException;
 import com.puc.vendas.repository.PedidoRepository;
+import com.puc.vendas.utils.Util;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -67,6 +70,9 @@ public class PedidoServiceImpl implements PedidoService {
 		BigDecimal valorDoPedido = compraService.calcularValorDaCompra(pedido.getCompras());
 
 		pedido.setValorDoPedido(valorDoPedido);
+		pedido.setCodigoDoPedido(Util.gerarCodigo("PEDIDO",5).toUpperCase());
+		pedido.setDataDoPedido(Util.dataNow());
+		pedido.setStatusDoPedido(StatusDoPedido.AGUARDANDO_PAGAMENTO);
 		
 		pedidoRepository.save(pedido);
 		
@@ -110,4 +116,54 @@ public class PedidoServiceImpl implements PedidoService {
 		return Optional.ofNullable(optional).get()
 		.orElseThrow(() -> new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND));
 	}
+
+	@Override
+	public PedidoDTO pagarPedido(String codigoDoPedido) throws VendaException {
+		
+		Optional<Pedido> optional = pedidoRepository.findByCodigoDoPedido(codigoDoPedido);
+	
+		Pedido pedido = validarPedido(optional);
+		
+		validarStatusAguardandoPagamento(pedido.getStatusDoPedido());
+		
+		pedido.setStatusDoPedido(StatusDoPedido.PAGO);
+
+		pedidoRepository.save(pedido);
+		
+		PedidoDTO pedidoDTO = modelMapper().map(pedido, PedidoDTO.class);
+
+		return pedidoDTO;
+	}
+
+	@Override
+	public PedidoDTO efetuarPedido(String codigoDoPedido) throws VendaException {
+		
+		Optional<Pedido> optional = pedidoRepository.findByCodigoDoPedido(codigoDoPedido);
+		
+		Pedido pedido = validarPedido(optional);
+		
+		validarStatusPago(pedido.getStatusDoPedido());
+		
+		produtoService.atualizarEstoque(pedido.getCompras());
+
+		pedidoRepository.save(pedido);
+		pedido.setStatusDoPedido(StatusDoPedido.EFETUADO);
+
+		PedidoDTO pedidoDTO = modelMapper().map(pedido, PedidoDTO.class);
+
+		return pedidoDTO;
+	}
+	
+	private void validarStatusAguardandoPagamento(StatusDoPedido statusDoPedido) {
+		if(statusDoPedido != StatusDoPedido.AGUARDANDO_PAGAMENTO) {
+			new VendaException(HttpStatus.NOT_FOUND, Constants.INCONSISTENCIA_NO_PEDIDO);
+		}
+	}
+	
+	private void validarStatusPago(StatusDoPedido statusDoPedido) {
+		if(statusDoPedido != StatusDoPedido.PAGO) {
+			new VendaException(HttpStatus.NOT_FOUND, Constants.PAGAGAMENTO_NAO_EFETUADO);
+		}
+	}
+	
 }

@@ -17,6 +17,7 @@ import com.puc.vendas.dtos.FornecedorDTO;
 import com.puc.vendas.entity.Fornecedor;
 import com.puc.vendas.exceptions.VendaException;
 import com.puc.vendas.repository.FornecedorRepository;
+import com.puc.vendas.utils.Util;
 
 @Service
 public class FornecedorServiceImpl implements FornecedorService {
@@ -54,6 +55,8 @@ public class FornecedorServiceImpl implements FornecedorService {
 	public FornecedorDTO incluir(FornecedorDTO fornecedorDTO) {
 		Fornecedor fornecedor = modelMapper().map(fornecedorDTO, Fornecedor.class);
 
+		fornecedor.setDataDoCadastro(Util.dataNow());
+		
 		fornecedorRepository.save(fornecedor);
 		
 		return modelMapper().map(fornecedor, FornecedorDTO.class);

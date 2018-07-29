@@ -21,6 +21,6 @@ public interface CompraService {
 
 	List<CompraDTO> buscarTodos();
 
-	BigDecimal calcularValorDaCompra(List<Compra> compras);
+	BigDecimal calcularValorDaCompra(List<Compra> compras) throws VendaException;
 
 }

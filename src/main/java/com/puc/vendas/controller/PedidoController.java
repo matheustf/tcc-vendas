@@ -54,7 +54,7 @@ public class PedidoController {
 		PedidoDTO responsePedidoDTO = pedidoService.incluir(pedidoDTO);
 		return new ResponseEntity<PedidoDTO>(responsePedidoDTO, HttpStatus.CREATED);
 	}
-
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<PedidoDTO> atualizar(@PathVariable(value = "id") Long id, @RequestBody @Valid PedidoDTO pedidoDTODetails) throws VendaException {
 
@@ -69,6 +69,22 @@ public class PedidoController {
 		ResponseEntity<PedidoDTO> response = pedidoService.deletar(id);
 		
 		return response;
+	}
+	
+	@PostMapping("/{codigoDoPedido}/pagar")
+	public ResponseEntity<PedidoDTO> pagarPedido(@PathVariable(value = "codigoDoPedido") String codigoDoPedido) throws VendaException {
+
+		PedidoDTO pedidoDTO =  pedidoService.pagarPedido(codigoDoPedido);
+		
+		return new ResponseEntity<PedidoDTO>(pedidoDTO, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/{codigoDoPedido}/efetuar")
+	public ResponseEntity<PedidoDTO> efetuarPedido(@PathVariable(value = "codigoDoPedido") String codigoDoPedido) throws VendaException {
+
+		PedidoDTO pedidoDTO =  pedidoService.efetuarPedido(codigoDoPedido);
+		
+		return new ResponseEntity<PedidoDTO>(pedidoDTO, HttpStatus.CREATED);
 	}
 
 }

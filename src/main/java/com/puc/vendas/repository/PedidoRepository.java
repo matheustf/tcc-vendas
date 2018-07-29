@@ -10,4 +10,6 @@ import com.puc.vendas.entity.Pedido;
 @Repository
 public interface PedidoRepository extends CrudRepository<Pedido, Long>{
 	public Optional<Pedido> findById(Long id);
+
+	public Optional<Pedido> findByCodigoDoPedido(String codigoDoPedido);
 }

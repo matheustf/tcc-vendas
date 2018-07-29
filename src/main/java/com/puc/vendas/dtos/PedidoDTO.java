@@ -17,11 +17,14 @@ import lombok.NoArgsConstructor;
 public class PedidoDTO {
 
 	private Long id;
+	
+	private String statusDoPedido;
+	
+	private String codigoDoPedido;
 
 	@NotNull()
 	private String nomeDoComprador;
 	
-	@NotNull()
 	private String dataDoPedido;
 	
 	@NotNull()

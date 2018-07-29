@@ -49,7 +49,7 @@ public class PedidoController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<PedidoDTO> incluir(@RequestBody @Valid PedidoDTO pedidoDTO) {
+	public ResponseEntity<PedidoDTO> incluir(@RequestBody @Valid PedidoDTO pedidoDTO) throws VendaException {
 
 		PedidoDTO responsePedidoDTO = pedidoService.incluir(pedidoDTO);
 		return new ResponseEntity<PedidoDTO>(responsePedidoDTO, HttpStatus.CREATED);

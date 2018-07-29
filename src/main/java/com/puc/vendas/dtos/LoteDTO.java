@@ -1,7 +1,5 @@
 package com.puc.vendas.dtos;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -20,13 +18,12 @@ public class LoteDTO {
 	@NotNull()
 	private String nome;
 	
+	private String dataDoLote;
+	
 	@NotNull()
 	private String codigoDoProduto;
 
 	@NotNull()
-	private BigDecimal precoUnitario;
-	
-	@NotNull()
-	private int quantidade;
+	private int quantidadeInserida;
 	
 }

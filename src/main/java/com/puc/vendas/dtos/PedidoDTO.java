@@ -1,5 +1,8 @@
 package com.puc.vendas.dtos;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -24,10 +27,10 @@ public class PedidoDTO {
 	@NotNull()
 	private String formaDePagamento;
 
-	private CompraDTO valorTotal;
+	private BigDecimal valorDoPedido;
 	
 	@NotNull()
-	private CompraDTO compras;
+	private List<CompraDTO> compras;
 	
 	
 }

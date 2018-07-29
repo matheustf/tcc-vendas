@@ -1,5 +1,7 @@
 package com.puc.vendas.dtos;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -21,9 +23,15 @@ public class ProdutoDTO {
 	private String nome;
 	
 	@NotNull()
+	private BigDecimal precoUnitario;
+	
+	@NotNull()
 	private String marca;
 	
 	@NotNull()
 	private String modelo;
 	
+	private String dataDeCadastro;
+	
+	private int quantidadeNoEstoque;
 }

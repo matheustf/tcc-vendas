@@ -1,5 +1,7 @@
 package com.puc.vendas.utils;
 
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
@@ -12,5 +14,11 @@ public class Util {
 			throw new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND);
 		}
 		return true;
+	}
+	
+	public static String gerarCodigo(int qtdCaracteres) {
+		UUID uuid = UUID.randomUUID();
+		String myRandom = uuid.toString();
+		return myRandom.substring(0,qtdCaracteres);
 	}
 }

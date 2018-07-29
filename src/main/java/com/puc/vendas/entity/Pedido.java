@@ -1,5 +1,8 @@
 package com.puc.vendas.entity;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +37,11 @@ public class Pedido {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
-	private Compra compras;
+	private BigDecimal valorDoPedido;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private List<Compra> compras;
 	
 	public Pedido update(Pedido pedido, Pedido detailsPedido) {
 		pedido.setNomeDoComprador(detailsPedido.getNomeDoComprador());

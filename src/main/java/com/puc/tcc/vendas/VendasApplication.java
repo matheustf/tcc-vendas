@@ -16,7 +16,6 @@ import com.puc.vendas.utils.ClearRepositories;
 @EnableAutoConfiguration
 public class VendasApplication implements CommandLineRunner{
 	
-	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
@@ -26,8 +25,6 @@ public class VendasApplication implements CommandLineRunner{
 	@Override
 	public void run(String... arg0) throws Exception {
 		clearRepositories.clear();
-		
-		
 		
 		Endereco endereco = Endereco.builder()
 				.cep("09454050")

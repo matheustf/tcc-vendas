@@ -1,10 +1,12 @@
 package com.puc.vendas.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
 import com.puc.vendas.dtos.CompraDTO;
+import com.puc.vendas.entity.Compra;
 import com.puc.vendas.exceptions.VendaException;
 
 public interface CompraService {
@@ -18,5 +20,7 @@ public interface CompraService {
 	ResponseEntity<CompraDTO> deletar(Long id) throws VendaException;
 
 	List<CompraDTO> buscarTodos();
+
+	BigDecimal calcularValorDaCompra(List<Compra> compras);
 
 }

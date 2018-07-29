@@ -1,6 +1,7 @@
 package com.puc.vendas.service;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.puc.vendas.consts.Constants;
 import com.puc.vendas.dtos.CompraDTO;
 import com.puc.vendas.entity.Compra;
+import com.puc.vendas.entity.Produto;
 import com.puc.vendas.exceptions.VendaException;
 import com.puc.vendas.repository.CompraRepository;
 
@@ -22,6 +24,8 @@ import com.puc.vendas.repository.CompraRepository;
 public class CompraServiceImpl implements CompraService {
 
 	CompraRepository compraRepository;
+	
+	ProdutoService produtoService;
 
 	@Autowired
 	public CompraServiceImpl(CompraRepository compraRepository) {
@@ -86,7 +90,21 @@ public class CompraServiceImpl implements CompraService {
 		
 		return ResponseEntity.noContent().build();
 	}
-
+	
+	@Override
+	public BigDecimal calcularValorDaCompra(List<Compra> compras) {
+		BigDecimal valorTotalPedido = null;
+		for (Compra compra : compras) {
+			Produto produto = produtoService.buscarProdutoPorCodigo(compra.getCodigoDoProduto());;
+			BigDecimal precoTotalQtd = produto.getPrecoUnitario().multiply(new BigDecimal(compra.getQuantidade()));
+			compra.setValorDaCompra(precoTotalQtd);
+			
+			valorTotalPedido.add(precoTotalQtd);
+		}
+		
+		return valorTotalPedido;
+	}
+	
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();

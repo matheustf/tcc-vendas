@@ -11,7 +11,7 @@ public interface PedidoService {
 	
 	PedidoDTO consultar(Long id) throws VendaException;
 	
-	PedidoDTO incluir(PedidoDTO pedidoDTO);
+	PedidoDTO incluir(PedidoDTO pedidoDTO) throws VendaException;
 	
 	PedidoDTO atualizar(Long id, PedidoDTO pedidoDTODetails) throws VendaException;
 	

@@ -1,7 +1,5 @@
 package com.puc.vendas.entity;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,17 +36,12 @@ public class Lote {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
-	private BigDecimal precoUnitario;
-	
-	@Column(nullable = false)
-	@NotNull(message = "Campo Obrigatorio!")
-	private int quantidade;
+	private int quantidadeInserida;
 	
 	public Lote update(Lote lote, Lote detailsLote) {
 		lote.setCodigoDoLote(detailsLote.getCodigoDoLote());
 		lote.setCodigoDoProduto(detailsLote.getCodigoDoProduto());
-		lote.setPrecoUnitario(detailsLote.getPrecoUnitario());
-		lote.setQuantidade(detailsLote.getQuantidade());
+		lote.setQuantidadeInserida(detailsLote.getQuantidadeInserida());
 
 		return lote;
 	}

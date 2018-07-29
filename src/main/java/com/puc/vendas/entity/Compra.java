@@ -1,5 +1,7 @@
 package com.puc.vendas.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +31,10 @@ public class Compra {
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
 	private String codigoDoProduto;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private BigDecimal valorDaCompra;
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")

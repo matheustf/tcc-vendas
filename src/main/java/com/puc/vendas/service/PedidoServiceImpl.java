@@ -1,6 +1,7 @@
 package com.puc.vendas.service;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.puc.vendas.consts.Constants;
 import com.puc.vendas.dtos.PedidoDTO;
 import com.puc.vendas.entity.Pedido;
+import com.puc.vendas.entity.Produto;
 import com.puc.vendas.exceptions.VendaException;
 import com.puc.vendas.repository.PedidoRepository;
 
@@ -22,10 +24,16 @@ import com.puc.vendas.repository.PedidoRepository;
 public class PedidoServiceImpl implements PedidoService {
 
 	PedidoRepository pedidoRepository;
+	
+	CompraService compraService;
+	
+	ProdutoService produtoService;
 
 	@Autowired
-	public PedidoServiceImpl(PedidoRepository pedidoRepository) {
+	public PedidoServiceImpl(PedidoRepository pedidoRepository, CompraService compraService, ProdutoService produtoService) {
 		this.pedidoRepository = pedidoRepository;
+		this.compraService = compraService;
+		this.produtoService = produtoService;
 	}
 
 	@Override
@@ -51,9 +59,15 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	@Override
-	public PedidoDTO incluir(PedidoDTO pedidoDTO) {
+	public PedidoDTO incluir(PedidoDTO pedidoDTO) throws VendaException {
 		Pedido pedido = modelMapper().map(pedidoDTO, Pedido.class);
 
+		produtoService.veficarDisponibilidadeDeProdutos(pedido.getCompras());
+		
+		BigDecimal valorDoPedido = compraService.calcularValorDaCompra(pedido.getCompras());
+
+		pedido.setValorDoPedido(valorDoPedido);
+		
 		pedidoRepository.save(pedido);
 		
 		return modelMapper().map(pedido, PedidoDTO.class);

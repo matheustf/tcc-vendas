@@ -14,15 +14,17 @@ import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 import com.puc.vendas.consts.Constants;
 import com.puc.vendas.dtos.ProdutoDTO;
+import com.puc.vendas.entity.Compra;
 import com.puc.vendas.entity.Produto;
 import com.puc.vendas.exceptions.VendaException;
 import com.puc.vendas.repository.ProdutoRepository;
+import com.puc.vendas.utils.Util;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
 
 	ProdutoRepository produtoRepository;
-
+	
 	@Autowired
 	public ProdutoServiceImpl(ProdutoRepository produtoRepository) {
 		this.produtoRepository = produtoRepository;
@@ -53,11 +55,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Override
 	public ProdutoDTO incluir(ProdutoDTO produtoDTO) {
 		Produto produto = modelMapper().map(produtoDTO, Produto.class);
+		
+		produto.setCodigoDoProduto(Util.gerarCodigo(13).toUpperCase());
 
 		produtoRepository.save(produto);
 		
 		return modelMapper().map(produto, ProdutoDTO.class);
 	}
+
 
 	@Override
 	public ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTODetails) throws VendaException {
@@ -86,6 +91,18 @@ public class ProdutoServiceImpl implements ProdutoService {
 		
 		return ResponseEntity.noContent().build();
 	}
+	
+	@Override
+	public void veficarDisponibilidadeDeProdutos(List<Compra> compras) throws VendaException {
+		for (Compra compra : compras) {
+			
+			Produto produto = produtoRepository.existsProdutoNoEstoque(compra.getCodigoDoProduto(), compra.getQuantidade());
+			if(produto != null) {
+				new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND + ": Produto " + produto.getNome() + "indisponível no momento");
+			}
+		}
+	}
+	
 
 	@Bean
 	public ModelMapper modelMapper() {
@@ -95,5 +112,17 @@ public class ProdutoServiceImpl implements ProdutoService {
 	private Produto validarProduto(Optional<Produto> optional) throws VendaException {
 		return Optional.ofNullable(optional).get()
 		.orElseThrow(() -> new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND));
+	}
+
+	@Override
+	public List<Produto> bucarProdutosPorCodigo(List<String> codigosDosProdutos) {
+		
+		return produtoRepository.bucarProdutosPorCodigo(codigosDosProdutos);
+	}
+
+	@Override
+	public Produto buscarProdutoPorCodigo(String codigoDoProduto) {
+		
+		return produtoRepository.findByCodigoDoProduto(codigoDoProduto).get();
 	}
 }

@@ -1,5 +1,7 @@
 package com.puc.vendas.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +34,10 @@ public class Produto {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private BigDecimal precoUnitario;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String marca;
 	
 	@Column(nullable = false)
@@ -42,11 +48,14 @@ public class Produto {
 	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDeCadastro;
 	
+	private int quantidadeNoEstoque;
+	
 	public Produto update(Produto produto, Produto detailsProduto) {
 		produto.setCodigoDoProduto(detailsProduto.getCodigoDoProduto());
 		produto.setNome(detailsProduto.getNome());
 		produto.setMarca(detailsProduto.getMarca());
 		produto.setModelo(detailsProduto.getModelo());
+		produto.setPrecoUnitario(detailsProduto.getPrecoUnitario());
 		
 		return produto;
 	}

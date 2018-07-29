@@ -17,6 +17,7 @@ import com.puc.vendas.dtos.LoteDTO;
 import com.puc.vendas.entity.Lote;
 import com.puc.vendas.exceptions.VendaException;
 import com.puc.vendas.repository.LoteRepository;
+import com.puc.vendas.utils.Util;
 
 @Service
 public class LoteServiceImpl implements LoteService {
@@ -53,6 +54,8 @@ public class LoteServiceImpl implements LoteService {
 	@Override
 	public LoteDTO incluir(LoteDTO loteDTO) {
 		Lote lote = modelMapper().map(loteDTO, Lote.class);
+		
+		lote.setCodigoDoLote(Util.gerarCodigo(8).toUpperCase());
 
 		loteRepository.save(lote);
 		

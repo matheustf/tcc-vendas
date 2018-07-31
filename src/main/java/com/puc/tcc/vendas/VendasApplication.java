@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import com.puc.tcc.vendas.entity.Lote;
 import com.puc.tcc.vendas.entity.Produto;
@@ -18,6 +20,8 @@ import com.puc.tcc.vendas.repository.ProdutoRepository;
 import com.puc.tcc.vendas.utils.ClearRepositories;
 
 
+@EnableDiscoveryClient
+@EnableEurekaClient
 @SpringBootApplication(exclude = JmsAutoConfiguration.class)
 @EnableAutoConfiguration
 public class VendasApplication implements CommandLineRunner{

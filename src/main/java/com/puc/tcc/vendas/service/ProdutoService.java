@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.puc.tcc.vendas.dtos.ProdutoDTO;
-import com.puc.tcc.vendas.entity.Compra;
 import com.puc.tcc.vendas.entity.Produto;
 import com.puc.tcc.vendas.exceptions.VendaException;
 
@@ -21,14 +20,8 @@ public interface ProdutoService {
 
 	List<ProdutoDTO> buscarTodos();
 
-	void veficarDisponibilidadeDeProdutos(List<Compra> compras) throws VendaException;
-
 	List<Produto> bucarProdutosPorCodigo(List<String> codigosDosProdutos);
 
 	Produto buscarProdutoPorCodigo(String codigoDoProduto) throws VendaException;
-
-	void atualizarQuantidadeEstocada(String codigoDoProduto, int quantidadeInserida) throws VendaException;
-
-	void atualizarEstoque(List<Compra> compras) throws VendaException;
 
 }

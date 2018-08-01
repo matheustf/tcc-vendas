@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.URL;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +33,7 @@ public class ProdutoDTO {
 	@NotNull()
 	private String modelo;
 	
+	@URL
 	private String urlImagem;
 	
 	private String dataDeCadastro;

@@ -1,7 +1,5 @@
 package com.puc.tcc.vendas.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -9,14 +7,13 @@ import java.util.Locale;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.MultipartStream;
-import org.json.simple.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.JsonObject;
 import com.puc.tcc.vendas.consts.Constants;
 import com.puc.tcc.vendas.exceptions.VendaException;
 
@@ -72,15 +69,17 @@ public class Util {
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 
-				JSONObject json = new JSONObject();
-				JSONObject jsonAuth = new JSONObject();
-				jsonAuth.put("api_key", "ede3e7f1d040bff71a56f2a2a768073d");
-				jsonAuth.put("api_secret", "87485400970b536f34f386d379336e15c707360b");
-				json.put("auth", jsonAuth);
+				JsonObject json = new JsonObject();
+				JsonObject jsonAuth = new JsonObject();
+				
+					jsonAuth.addProperty("api_key", "ede3e7f1d040bff71a56f2a2a768073d");
+			
+				jsonAuth.addProperty("api_secret", "87485400970b536f34f386d379336e15c707360b");
+				json.add("auth", jsonAuth);
 
-				json.put("url",
+				json.addProperty("url",
 						"https://chrisslade.com/wp-content/uploads/2015/03/AC-DC_with_Chris_Slade_The_Grammys_05-150x150.jpg");
-				json.put("wait", true);
+				json.addProperty("wait", true);
 				
 				
 				ResponseEntity<String> response = restTemplate.postForEntity(url, json, String.class);

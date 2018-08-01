@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import com.puc.tcc.vendas.repository.CompraRepository;
 import com.puc.tcc.vendas.repository.EnderecoRepository;
 import com.puc.tcc.vendas.repository.FornecedorRepository;
-import com.puc.tcc.vendas.repository.LoteRepository;
 import com.puc.tcc.vendas.repository.PedidoRepository;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
 
@@ -21,9 +20,6 @@ public class ClearRepositories {
 	private FornecedorRepository fornecedorRepository;
 	
 	@Autowired
-	private LoteRepository loteRepository;
-	
-	@Autowired
 	private PedidoRepository pedidoRepository;
 	
 	@Autowired
@@ -35,7 +31,6 @@ public class ClearRepositories {
 	public void clear() {
 		compraRepository.deleteAll();
 		fornecedorRepository.deleteAll();
-		loteRepository.deleteAll();
 		pedidoRepository.deleteAll();
 		produtoRepository.deleteAll();
 		enderecoRepository.deleteAll();

@@ -28,13 +28,10 @@ public class PedidoServiceImpl implements PedidoService {
 	
 	CompraService compraService;
 	
-	ProdutoService produtoService;
-
 	@Autowired
-	public PedidoServiceImpl(PedidoRepository pedidoRepository, CompraService compraService, ProdutoService produtoService) {
+	public PedidoServiceImpl(PedidoRepository pedidoRepository, CompraService compraService) {
 		this.pedidoRepository = pedidoRepository;
 		this.compraService = compraService;
-		this.produtoService = produtoService;
 	}
 
 	@Override
@@ -63,8 +60,6 @@ public class PedidoServiceImpl implements PedidoService {
 	public PedidoDTO incluir(PedidoDTO pedidoDTO) throws VendaException {
 		Pedido pedido = modelMapper().map(pedidoDTO, Pedido.class);
 
-		produtoService.veficarDisponibilidadeDeProdutos(pedido.getCompras());
-		
 		BigDecimal valorDoPedido = compraService.calcularValorDaCompra(pedido.getCompras());
 
 		pedido.setValorDoPedido(valorDoPedido);
@@ -142,8 +137,6 @@ public class PedidoServiceImpl implements PedidoService {
 		
 		validarStatusPago(pedido.getStatusDoPedido());
 		
-		produtoService.atualizarEstoque(pedido.getCompras());
-
 		pedidoRepository.save(pedido);
 		pedido.setStatusDoPedido(StatusDoPedido.EFETUADO);
 

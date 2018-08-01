@@ -35,5 +35,9 @@ public class PedidoDTO {
 	@NotNull()
 	private List<CompraDTO> compras;
 	
+	private boolean enderecoCadastrado;
+	
+	private List<EnderecoDTO> enderecoDeEntrega;
+	
 	
 }

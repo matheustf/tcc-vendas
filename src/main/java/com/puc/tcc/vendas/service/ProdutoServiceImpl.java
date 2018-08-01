@@ -1,7 +1,6 @@
 package com.puc.tcc.vendas.service;
 
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 import com.puc.tcc.vendas.consts.Constants;
 import com.puc.tcc.vendas.dtos.ProdutoDTO;
-import com.puc.tcc.vendas.entity.Compra;
 import com.puc.tcc.vendas.entity.Produto;
 import com.puc.tcc.vendas.exceptions.VendaException;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
@@ -102,21 +100,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@Override
-	public void veficarDisponibilidadeDeProdutos(List<Compra> compras) throws VendaException {
-		for (Compra compra : compras) {
-			
-			Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(compra.getCodigoDoProduto());
-			Produto produto = validarProduto(optional);
-			
-			if(produto.getQuantidadeNoEstoque() < compra.getQuantidade()) {
-				 new VendaException(HttpStatus.NOT_FOUND, Constants.PRODUTO_INDISPONIVEL);
-			}
-
-		}
-	}
-	
-
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
@@ -143,25 +126,4 @@ public class ProdutoServiceImpl implements ProdutoService {
 		return produto;
 	}
 
-	@Override
-	public void atualizarQuantidadeEstocada(String codigoDoProduto, int quantidadeInserida) throws VendaException {
-		Produto produto = buscarProdutoPorCodigo(codigoDoProduto);
-		produto.setQuantidadeNoEstoque(produto.getQuantidadeNoEstoque() + quantidadeInserida);
-		
-		produtoRepository.save(produto);
-	}
-
-	@Override
-	public void atualizarEstoque(List<Compra> compras) throws VendaException {
-		for (Compra compra : compras) {
-			Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(compra.getCodigoDoProduto());
-			
-			Produto produto = validarProduto(optional);
-			
-			produto.setQuantidadeNoEstoque(produto.getQuantidadeNoEstoque() - compra.getQuantidade());
-			
-			produtoRepository.save(produto);
-		}
-		
-	}
 }

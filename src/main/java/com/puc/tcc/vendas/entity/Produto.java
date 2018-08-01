@@ -52,8 +52,6 @@ public class Produto {
 	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDeCadastro;
 	
-	private int quantidadeNoEstoque;
-	
 	public Produto update(Produto produto, Produto detailsProduto) {
 		produto.setCodigoDoProduto(detailsProduto.getCodigoDoProduto());
 		produto.setNome(detailsProduto.getNome());

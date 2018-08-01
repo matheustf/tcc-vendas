@@ -40,6 +40,10 @@ public class Fornecedor {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private String urlDeRetorno;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String email;
 	
 	@Column(nullable = false)
@@ -53,6 +57,7 @@ public class Fornecedor {
 		fornecedor.setRazaoSocial(detailsFornecedor.getRazaoSocial());
 		fornecedor.setCnpj(detailsFornecedor.getCnpj());
 		fornecedor.setRamoDeAtividade(detailsFornecedor.getRamoDeAtividade());
+		fornecedor.setUrlDeRetorno(detailsFornecedor.getUrlDeRetorno());
 		fornecedor.setEmail(detailsFornecedor.getEmail());
 		
 		return fornecedor;

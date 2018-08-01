@@ -31,6 +31,8 @@ public class ProdutoDTO {
 	@NotNull()
 	private String modelo;
 	
+	private String urlImagem;
+	
 	private String dataDeCadastro;
 	
 	private int quantidadeNoEstoque;

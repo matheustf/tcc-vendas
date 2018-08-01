@@ -46,6 +46,10 @@ public class Produto {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private String urlImagem;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDeCadastro;
 	
 	private int quantidadeNoEstoque;
@@ -55,6 +59,7 @@ public class Produto {
 		produto.setNome(detailsProduto.getNome());
 		produto.setMarca(detailsProduto.getMarca());
 		produto.setModelo(detailsProduto.getModelo());
+		produto.setUrlImagem(detailsProduto.getUrlImagem());
 		produto.setPrecoUnitario(detailsProduto.getPrecoUnitario());
 		
 		return produto;

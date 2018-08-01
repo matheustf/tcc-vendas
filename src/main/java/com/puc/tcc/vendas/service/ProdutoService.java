@@ -13,7 +13,7 @@ public interface ProdutoService {
 	
 	ProdutoDTO consultar(Long id) throws VendaException;
 	
-	ProdutoDTO incluir(ProdutoDTO produtoDTO);
+	ProdutoDTO incluir(ProdutoDTO produtoDTO) throws VendaException;
 	
 	ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTODetails) throws VendaException;
 	

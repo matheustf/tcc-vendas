@@ -49,7 +49,7 @@ public class ProdutoController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ProdutoDTO> incluir(@RequestBody @Valid ProdutoDTO produtoDTO) {
+	public ResponseEntity<ProdutoDTO> incluir(@RequestBody @Valid ProdutoDTO produtoDTO) throws VendaException {
 
 		ProdutoDTO responseProdutoDTO = produtoService.incluir(produtoDTO);
 		return new ResponseEntity<ProdutoDTO>(responseProdutoDTO, HttpStatus.CREATED);

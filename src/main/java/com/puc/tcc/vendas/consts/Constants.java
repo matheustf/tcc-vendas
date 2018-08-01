@@ -13,4 +13,6 @@ public class Constants {
 	public static final String PRODUTO_INDISPONIVEL = "Produto indisponível no momento";
 	
 	public static final String SERVER_ERROR = "Desculpe, temos um promblema em nosso servidor. Por favor, retorne mais tarde.";
+
+	public static final String URL_IMAGEM_INCORRETA = "A URL da imagem está incorreta, tente outra URL ";
 }

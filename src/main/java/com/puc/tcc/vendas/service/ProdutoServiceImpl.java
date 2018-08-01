@@ -1,6 +1,7 @@
 package com.puc.tcc.vendas.service;
 
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import com.puc.tcc.vendas.entity.Compra;
 import com.puc.tcc.vendas.entity.Produto;
 import com.puc.tcc.vendas.exceptions.VendaException;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
+import com.puc.tcc.vendas.stream.KrarenStorage;
 import com.puc.tcc.vendas.utils.Util;
 
 @Service
@@ -25,9 +27,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	ProdutoRepository produtoRepository;
 	
+	KrarenStorage krarenStorage;
+	
 	@Autowired
-	public ProdutoServiceImpl(ProdutoRepository produtoRepository) {
+	public ProdutoServiceImpl(ProdutoRepository produtoRepository, KrarenStorage krarenStorage) {
 		this.produtoRepository = produtoRepository;
+		this.krarenStorage = krarenStorage;
 	}
 
 	@Override
@@ -53,11 +58,15 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public ProdutoDTO incluir(ProdutoDTO produtoDTO) {
+	public ProdutoDTO incluir(ProdutoDTO produtoDTO) throws VendaException {
 		Produto produto = modelMapper().map(produtoDTO, Produto.class);
 		
 		produto.setCodigoDoProduto(Util.gerarCodigo("PRODUTO",5).toUpperCase());
 		produto.setDataDeCadastro(Util.dataNow());
+		
+		String urlImagem = krarenStorage.post(produtoDTO.getUrlImagem());
+		
+		produto.setUrlImagem(urlImagem);
 
 		produtoRepository.save(produto);
 		

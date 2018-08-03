@@ -1,6 +1,8 @@
 package com.puc.tcc.vendas.service;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.reflect.TypeToken;
 import com.puc.tcc.vendas.consts.Constants;
+import com.puc.tcc.vendas.dtos.CategoriaDTO;
 import com.puc.tcc.vendas.dtos.ProdutoDTO;
 import com.puc.tcc.vendas.entity.Produto;
 import com.puc.tcc.vendas.exceptions.VendaException;
@@ -27,10 +30,13 @@ public class ProdutoServiceImpl implements ProdutoService {
 	
 	KrarenStorage krarenStorage;
 	
+	CategoriaService categoriaService;
+	
 	@Autowired
-	public ProdutoServiceImpl(ProdutoRepository produtoRepository, KrarenStorage krarenStorage) {
+	public ProdutoServiceImpl(ProdutoRepository produtoRepository, KrarenStorage krarenStorage, CategoriaService categoriaService) {
 		this.produtoRepository = produtoRepository;
 		this.krarenStorage = krarenStorage;
+		this.categoriaService = categoriaService;
 	}
 
 	@Override
@@ -48,9 +54,38 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public List<ProdutoDTO> buscarTodos() {
 
 		List<Produto> produtos = (List<Produto>) produtoRepository.findAll();
-
+		
+		for (Iterator<Produto> it = produtos.iterator(); it.hasNext(); ) {  
+			Produto produto = it.next();  
+			if (!produto.isDisponivelNoEstoque())
+			{
+				it.remove();
+			}   
+		}
+	
 		Type listType = new TypeToken<List<ProdutoDTO>>(){}.getType();
 		List<ProdutoDTO> produtosDTO = modelMapper().map(produtos, listType);
+		
+
+		return produtosDTO;
+	}
+	
+	@Override
+	public List<ProdutoDTO> buscarProdutosIndisponiveis() {
+
+		List<Produto> produtos = (List<Produto>) produtoRepository.findAll();
+		
+		for (Iterator<Produto> it = produtos.iterator(); it.hasNext(); ) {  
+			Produto produto = it.next();  
+			if (produto.isDisponivelNoEstoque())
+			{
+				it.remove();
+			}   
+		}
+	
+		Type listType = new TypeToken<List<ProdutoDTO>>(){}.getType();
+		List<ProdutoDTO> produtosDTO = modelMapper().map(produtos, listType);
+		
 
 		return produtosDTO;
 	}
@@ -58,9 +93,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Override
 	public ProdutoDTO incluir(ProdutoDTO produtoDTO) throws VendaException {
 		Produto produto = modelMapper().map(produtoDTO, Produto.class);
+
+		CategoriaDTO categoria = categoriaService.buscarCategoriaPorNome(produtoDTO.getCategoriaDoProduto());
 		
 		produto.setCodigoDoProduto(Util.gerarCodigo("PRODUTO",5).toUpperCase());
 		produto.setDataDeCadastro(Util.dataNow());
+		produto.setPrecoUnitario((produto.getValor().multiply(new BigDecimal(categoria.getTaxaDeCobranca()).add(new BigDecimal("100")))).divide(new BigDecimal("100")));
 		
 		String urlImagem = krarenStorage.post(produtoDTO.getUrlImagem());
 		
@@ -68,7 +106,10 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 		produtoRepository.save(produto);
 		
-		return modelMapper().map(produto, ProdutoDTO.class);
+		ProdutoDTO produtoDTOreturn = modelMapper().map(produto, ProdutoDTO.class);
+		produtoDTOreturn.setCategoria(categoria);
+		
+		return produtoDTOreturn;
 	}
 
 

@@ -38,11 +38,19 @@ public class Produto {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private BigDecimal valor;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String marca;
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
 	private String modelo;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String categoriaDoProduto;
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
@@ -56,14 +64,20 @@ public class Produto {
 	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDeCadastro;
 	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private boolean disponivelNoEstoque;
+	
 	public Produto update(Produto produto, Produto detailsProduto) {
 		produto.setCodigoDoProduto(detailsProduto.getCodigoDoProduto());
 		produto.setNome(detailsProduto.getNome());
 		produto.setMarca(detailsProduto.getMarca());
 		produto.setModelo(detailsProduto.getModelo());
+		produto.setCategoriaDoProduto(detailsProduto.getCategoriaDoProduto());
 		produto.setUrlImagem(detailsProduto.getUrlImagem());
 		produto.setDiasUteisParaEntrega(detailsProduto.getDiasUteisParaEntrega());
-		produto.setPrecoUnitario(detailsProduto.getPrecoUnitario());
+		produto.setValor(detailsProduto.getValor());
+		produto.setDisponivelNoEstoque(detailsProduto.isDisponivelNoEstoque());
 		
 		return produto;
 	}

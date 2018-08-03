@@ -3,6 +3,7 @@ package com.puc.tcc.vendas.utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.puc.tcc.vendas.repository.CategoriaRepository;
 import com.puc.tcc.vendas.repository.CompraRepository;
 import com.puc.tcc.vendas.repository.EnderecoRepository;
 import com.puc.tcc.vendas.repository.FornecedorRepository;
@@ -28,12 +29,16 @@ public class ClearRepositories {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
+	
 	public void clear() {
 		compraRepository.deleteAll();
 		fornecedorRepository.deleteAll();
 		pedidoRepository.deleteAll();
 		produtoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		categoriaRepository.deleteAll();
 	}
 
 }

@@ -24,14 +24,18 @@ public class ProdutoDTO {
 	@NotNull()
 	private String nome;
 	
-	@NotNull()
 	private BigDecimal precoUnitario;
+
+	@NotNull()
+	private BigDecimal valor;
 	
 	@NotNull()
 	private String marca;
 	
 	@NotNull()
 	private String modelo;
+
+	private String categoriaDoProduto;
 	
 	@URL
 	private String urlImagem;
@@ -41,5 +45,8 @@ public class ProdutoDTO {
 	
 	private String dataDeCadastro;
 	
-	private int quantidadeNoEstoque;
+	@NotNull()
+	private boolean disponivelNoEstoque;
+	
+	private CategoriaDTO categoria;
 }

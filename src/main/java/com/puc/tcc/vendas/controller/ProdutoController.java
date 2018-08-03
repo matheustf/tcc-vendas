@@ -39,6 +39,15 @@ public class ProdutoController {
 
 		return new ResponseEntity<List<ProdutoDTO>>(listProdutos, HttpStatus.OK);
 	}
+	
+	@GetMapping()
+	@RequestMapping("/indisponiveis")
+	public ResponseEntity<List<ProdutoDTO>> buscarProdutosIndisponiveis() {
+
+		List<ProdutoDTO> listProdutos = produtoService.buscarProdutosIndisponiveis();
+
+		return new ResponseEntity<List<ProdutoDTO>>(listProdutos, HttpStatus.OK);
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ProdutoDTO> consultar(@PathVariable(value = "id") Long idProduto) throws VendaException {

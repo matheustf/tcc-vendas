@@ -24,4 +24,6 @@ public interface ProdutoService {
 
 	Produto buscarProdutoPorCodigo(String codigoDoProduto) throws VendaException;
 
+	List<ProdutoDTO> buscarProdutosIndisponiveis();
+
 }

@@ -6,6 +6,8 @@ public class Constants {
 	
 	public static final String ITEM_NOT_FOUND = "Item não encontrado ";
 	
+	public static final String CATEGORIA_NOT_FOUND = "Categoria não encontrada ";
+	
 	public static final String INCONSISTENCIA_NO_PEDIDO = "Inconsistência no Pedido ";
 	
 	public static final String PAGAGAMENTO_NAO_EFETUADO = "Pagamento não efetuado ";

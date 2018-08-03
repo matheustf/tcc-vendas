@@ -36,6 +36,9 @@ public class ProdutoDTO {
 	@URL
 	private String urlImagem;
 	
+	@NotNull()
+	private int diasUteisParaEntrega;
+	
 	private String dataDeCadastro;
 	
 	private int quantidadeNoEstoque;

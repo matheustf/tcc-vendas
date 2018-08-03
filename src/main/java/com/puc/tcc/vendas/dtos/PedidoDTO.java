@@ -37,6 +37,8 @@ public class PedidoDTO {
 	
 	private boolean enderecoCadastrado;
 	
+	private int diasUteisParaEntrega;
+	
 	private List<EnderecoDTO> enderecoDeEntrega;
 	
 	

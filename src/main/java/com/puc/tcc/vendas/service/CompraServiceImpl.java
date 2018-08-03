@@ -96,7 +96,7 @@ public class CompraServiceImpl implements CompraService {
 	public BigDecimal calcularValorDaCompra(List<Compra> compras) throws VendaException {
 		BigDecimal valorTotalPedido = BigDecimal.ZERO;
 		for (Compra compra : compras) {
-			Produto produto = produtoService.buscarProdutoPorCodigo(compra.getCodigoDoProduto());;
+			Produto produto = produtoService.buscarProdutoPorCodigo(compra.getCodigoDoProduto());
 			BigDecimal precoTotalQtd = produto.getPrecoUnitario().multiply(new BigDecimal(compra.getQuantidade()));
 			compra.setValorDaCompra(precoTotalQtd);
 			
@@ -104,6 +104,19 @@ public class CompraServiceImpl implements CompraService {
 		}
 		
 		return valorTotalPedido;
+	}
+	
+	@Override
+	public int diasUteisParaEntrega(List<Compra> compras) throws VendaException {
+		int dias = 0;
+		for (Compra compra : compras) {
+			Produto produto = produtoService.buscarProdutoPorCodigo(compra.getCodigoDoProduto());
+			if(dias < produto.getDiasUteisParaEntrega()) {
+				dias = produto.getDiasUteisParaEntrega();
+			}
+		}
+		
+		return dias;
 	}
 	
 	@Bean

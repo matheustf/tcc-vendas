@@ -23,4 +23,6 @@ public interface CompraService {
 
 	BigDecimal calcularValorDaCompra(List<Compra> compras) throws VendaException;
 
+	int diasUteisParaEntrega(List<Compra> compras) throws VendaException;
+
 }

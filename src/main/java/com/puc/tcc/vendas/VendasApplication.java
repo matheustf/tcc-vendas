@@ -37,8 +37,8 @@ public class VendasApplication implements CommandLineRunner{
 		String urlImagemAdidasPreto = "https://dl.kraken.io/api/e8/bc/b1/2585b48810adb2764c4a0ec4d3/tenis-adidas-superstar-preto-e-branco-185567-700x600-150x150.jpg";
 		String urlImagemNikeBranco = "https://dl.kraken.io/api/d7/c2/5f/21c8c6dcd44880f50cd601abe7/nike-shox-03-150x150.jpg";
 		
-		Produto tenisAdidasPreto = Produto.builder().codigoDoProduto("PRODUTO-2D50E").urlImagem(urlImagemAdidasPreto).dataDeCadastro("29/07/2018 09:59:27").nome("Adidas Energy Cloud 2.0").marca("Adidas").modelo("Preto").precoUnitario(new BigDecimal("300.00")).build();
-		Produto tenisNikeBranco = Produto.builder().codigoDoProduto("PRODUTO-6A850").urlImagem(urlImagemNikeBranco).dataDeCadastro("29/07/2018 09:59:26").nome("Nike Revolution").marca("Nike").modelo("Branco").precoUnitario(new BigDecimal("500.00")).build();
+		Produto tenisAdidasPreto = Produto.builder().codigoDoProduto("PRODUTO-2D50E").urlImagem(urlImagemAdidasPreto).dataDeCadastro("29/07/2018 09:59:27").nome("Adidas Energy Cloud 2.0").marca("Adidas").modelo("Preto").precoUnitario(new BigDecimal("300.00")).diasUteisParaEntrega(5).build();
+		Produto tenisNikeBranco = Produto.builder().codigoDoProduto("PRODUTO-6A850").urlImagem(urlImagemNikeBranco).dataDeCadastro("29/07/2018 09:59:26").nome("Nike Revolution").marca("Nike").modelo("Branco").precoUnitario(new BigDecimal("500.00")).diasUteisParaEntrega(8).build();
 		
 		produtoRepository.saveAll(Arrays.asList(tenisAdidasPreto,tenisNikeBranco));
 		

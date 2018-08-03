@@ -57,6 +57,10 @@ public class Pedido {
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDoPedido;
+
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private int diasUteisParaEntrega;
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")

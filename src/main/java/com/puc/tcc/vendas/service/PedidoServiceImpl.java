@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 import com.puc.tcc.vendas.consts.Constants;
 import com.puc.tcc.vendas.dtos.PedidoDTO;
+import com.puc.tcc.vendas.entity.Compra;
 import com.puc.tcc.vendas.entity.Pedido;
 import com.puc.tcc.vendas.enums.StatusDoPedido;
 import com.puc.tcc.vendas.exceptions.VendaException;
@@ -66,6 +67,7 @@ public class PedidoServiceImpl implements PedidoService {
 		pedido.setCodigoDoPedido(Util.gerarCodigo("PEDIDO",5).toUpperCase());
 		pedido.setDataDoPedido(Util.dataNow());
 		pedido.setStatusDoPedido(StatusDoPedido.AGUARDANDO_PAGAMENTO);
+		pedido.setDiasUteisParaEntrega(compraService.diasUteisParaEntrega(pedido.getCompras()));
 		
 		pedidoRepository.save(pedido);
 		

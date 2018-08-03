@@ -50,6 +50,10 @@ public class Produto {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private int diasUteisParaEntrega;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDeCadastro;
 	
 	public Produto update(Produto produto, Produto detailsProduto) {
@@ -58,6 +62,7 @@ public class Produto {
 		produto.setMarca(detailsProduto.getMarca());
 		produto.setModelo(detailsProduto.getModelo());
 		produto.setUrlImagem(detailsProduto.getUrlImagem());
+		produto.setDiasUteisParaEntrega(detailsProduto.getDiasUteisParaEntrega());
 		produto.setPrecoUnitario(detailsProduto.getPrecoUnitario());
 		
 		return produto;

@@ -3,6 +3,7 @@ package com.puc.tcc.vendas.stream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import org.json.simple.JSONObject;
 import com.puc.tcc.vendas.consts.Constants;
 import com.puc.tcc.vendas.exceptions.VendaException;
 

@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 import com.puc.tcc.vendas.consts.Constants;
 import com.puc.tcc.vendas.dtos.PedidoDTO;
-import com.puc.tcc.vendas.entity.Compra;
 import com.puc.tcc.vendas.entity.Pedido;
 import com.puc.tcc.vendas.enums.StatusDoPedido;
 import com.puc.tcc.vendas.exceptions.VendaException;
+import com.puc.tcc.vendas.rabbitmq.RabbitMQComponent;
 import com.puc.tcc.vendas.repository.PedidoRepository;
 import com.puc.tcc.vendas.utils.Util;
 
@@ -29,10 +29,13 @@ public class PedidoServiceImpl implements PedidoService {
 	
 	CompraService compraService;
 	
+	RabbitMQComponent rabbitMQComponent;
+	
 	@Autowired
-	public PedidoServiceImpl(PedidoRepository pedidoRepository, CompraService compraService) {
+	public PedidoServiceImpl(PedidoRepository pedidoRepository, CompraService compraService, RabbitMQComponent rabbitMQComponent) {
 		this.pedidoRepository = pedidoRepository;
 		this.compraService = compraService;
+		this.rabbitMQComponent = rabbitMQComponent;
 	}
 
 	@Override
@@ -140,6 +143,8 @@ public class PedidoServiceImpl implements PedidoService {
 		validarStatusPago(pedido.getStatusDoPedido());
 		
 		pedidoRepository.save(pedido);
+		rabbitMQComponent.sendPedido(pedido);
+		
 		pedido.setStatusDoPedido(StatusDoPedido.EFETUADO);
 
 		PedidoDTO pedidoDTO = modelMapper().map(pedido, PedidoDTO.class);

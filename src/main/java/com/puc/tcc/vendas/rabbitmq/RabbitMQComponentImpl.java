@@ -25,7 +25,7 @@ public class RabbitMQComponentImpl implements RabbitMQComponent{
 
 		System.out.println(new Date());
 		rabbitMessagingTemplate.convertAndSend(RobbitMqConfig.ROUTING_PEDIDO, pedido);
-	    System.out.println("Is listener returned ::: ");
+		System.out.println("Is listener returned OK - Pedido::: ");
 	    
 	}
 

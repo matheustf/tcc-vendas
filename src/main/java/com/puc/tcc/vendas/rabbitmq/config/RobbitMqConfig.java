@@ -14,7 +14,7 @@ public class RobbitMqConfig {
 	public static final String ROUTING_PEDIDO = "my.queue.pedidos";
 
 	@Bean
-	Queue queueCachorro() {
+	Queue queuePedidos() {
 		return new Queue(ROUTING_PEDIDO, true);
 	}
 	
@@ -25,8 +25,8 @@ public class RobbitMqConfig {
 	
 	
 	@Bean
-	Binding bindingExchangeCachorro(Queue queueCachorro, TopicExchange exchange) {
-		return BindingBuilder.bind(queueCachorro).to(exchange).with(ROUTING_PEDIDO);
+	Binding bindingExchangePedidos(Queue queuePedidos, TopicExchange exchange) {
+		return BindingBuilder.bind(queuePedidos).to(exchange).with(ROUTING_PEDIDO);
 	}
 	
 	@Bean

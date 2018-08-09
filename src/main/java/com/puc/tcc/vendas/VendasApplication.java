@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import com.puc.tcc.vendas.entity.Categoria;
 import com.puc.tcc.vendas.entity.Produto;
@@ -17,10 +18,9 @@ import com.puc.tcc.vendas.repository.PedidoRepository;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
 import com.puc.tcc.vendas.utils.ClearRepositories;
 
-
-@SpringBootApplication(exclude = JmsAutoConfiguration.class)
+@EnableDiscoveryClient
 @EnableAutoConfiguration
-
+@SpringBootApplication(exclude = JmsAutoConfiguration.class)
 public class VendasApplication implements CommandLineRunner{
 	
 	@Autowired

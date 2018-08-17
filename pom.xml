@@ -23,7 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>springio</docker.image.prefix>
+		<docker.image.prefix>tcc</docker.image.prefix>
 		<spring-cloud.version>Finchley.SR1</spring-cloud.version>
 	</properties>
 

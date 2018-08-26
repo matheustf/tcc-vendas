@@ -56,6 +56,14 @@ public class ProdutoController {
 
 		return new ResponseEntity<ProdutoDTO>(produtoDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping("/codigoDoProduto/{codigoDoProduto}")
+	public ResponseEntity<ProdutoDTO> consultarPorCodigoDoProduto(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
+
+		ProdutoDTO produtoDTO = produtoService.consultarPorCodigoDoProduto(codigoDoProduto);
+
+		return new ResponseEntity<ProdutoDTO>(produtoDTO, HttpStatus.OK);
+	}
 
 	@PostMapping("")
 	public ResponseEntity<ProdutoDTO> incluir(@RequestBody @Valid ProdutoDTO produtoDTO) throws VendaException {

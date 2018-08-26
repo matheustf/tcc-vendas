@@ -1,5 +1,6 @@
 package com.puc.tcc.vendas.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -12,4 +13,6 @@ public interface PedidoRepository extends CrudRepository<Pedido, Long>{
 	public Optional<Pedido> findById(Long id);
 
 	public Optional<Pedido> findByCodigoDoPedido(String codigoDoPedido);
+
+	public Optional<List<Pedido>> findAllByIdCliente(String idCliente);
 }

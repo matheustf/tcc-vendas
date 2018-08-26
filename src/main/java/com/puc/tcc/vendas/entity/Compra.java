@@ -26,6 +26,14 @@ public class Compra {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private String codigoDaCompra;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String idFornecedor;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String codigoDoProduto;
 	
 	@Column(nullable = false)

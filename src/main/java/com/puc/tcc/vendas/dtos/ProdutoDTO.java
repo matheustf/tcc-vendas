@@ -49,4 +49,7 @@ public class ProdutoDTO {
 	private boolean disponivelNoEstoque;
 	
 	private CategoriaDTO categoria;
+	
+	@NotNull()
+	private String codigoDoFornecedor;
 }

@@ -23,4 +23,6 @@ public interface PedidoService {
 
 	PedidoDTO efetuarPedido(String codigoDoPedido) throws VendaException;
 
+	List<PedidoDTO> buscarPedidosPorCliente(String idCliente) throws VendaException;
+
 }

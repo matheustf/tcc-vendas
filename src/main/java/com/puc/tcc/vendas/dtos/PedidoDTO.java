@@ -23,7 +23,7 @@ public class PedidoDTO {
 	private String codigoDoPedido;
 
 	@NotNull()
-	private String nomeDoComprador;
+	private String idCliente;
 	
 	private String dataDoPedido;
 	
@@ -38,6 +38,8 @@ public class PedidoDTO {
 	private boolean enderecoCadastrado;
 	
 	private int diasUteisParaEntrega;
+	
+	private String estimativaDeEntrega;
 	
 	private List<EnderecoDTO> enderecoDeEntrega;
 	

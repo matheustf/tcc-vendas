@@ -44,7 +44,7 @@ public class Pedido implements Serializable{
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
-	private String nomeDoComprador;
+	private String idCliente;
 	
 	@NotNull(message = "Campo Obrigatorio!")
 	@Enumerated(EnumType.STRING)
@@ -68,13 +68,15 @@ public class Pedido implements Serializable{
 	@NotNull(message = "Campo Obrigatorio!")
 	private int diasUteisParaEntrega;
 	
+	private String estimativaDeEntrega;
+	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Compra> compras;
 	
 	public Pedido update(Pedido pedido, Pedido detailsPedido) {
-		pedido.setNomeDoComprador(detailsPedido.getNomeDoComprador());
+		pedido.setIdCliente(detailsPedido.getIdCliente());
 		pedido.setFormaDePagamento(detailsPedido.getFormaDePagamento());
 		pedido.setCompras(detailsPedido.getCompras());
 		

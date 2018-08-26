@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import com.puc.tcc.vendas.entity.Categoria;
 import com.puc.tcc.vendas.entity.Produto;
@@ -18,6 +20,8 @@ import com.puc.tcc.vendas.repository.PedidoRepository;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
 import com.puc.tcc.vendas.utils.ClearRepositories;
 
+@EnableHystrix
+@EnableFeignClients
 @EnableDiscoveryClient
 @EnableAutoConfiguration
 @SpringBootApplication(exclude = JmsAutoConfiguration.class)
@@ -60,6 +64,7 @@ public class VendasApplication implements CommandLineRunner{
 				.precoUnitario(new BigDecimal("330.00"))
 				.diasUteisParaEntrega(5)
 				.disponivelNoEstoque(true)
+				.codigoDoFornecedor("FORNECEDOR-DQSDW")
 				.build();
 		
 		Produto tenisNikeBranco = Produto.builder()
@@ -74,6 +79,7 @@ public class VendasApplication implements CommandLineRunner{
 				.precoUnitario(new BigDecimal("550.00"))
 				.diasUteisParaEntrega(8)
 				.disponivelNoEstoque(true)
+				.codigoDoFornecedor("FORNECEDOR-FEFTR")
 				.build();
 		
 		produtoRepository.saveAll(Arrays.asList(tenisAdidasPreto,tenisNikeBranco));

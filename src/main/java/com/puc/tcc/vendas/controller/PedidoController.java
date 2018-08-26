@@ -32,10 +32,17 @@ public class PedidoController {
 	}
 
 	@GetMapping()
-	@RequestMapping("")
 	public ResponseEntity<List<PedidoDTO>> buscarTodos() {
 
 		List<PedidoDTO> listPedidos = pedidoService.buscarTodos();
+
+		return new ResponseEntity<List<PedidoDTO>>(listPedidos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/cliente/{idCliente}")
+	public ResponseEntity<List<PedidoDTO>> buscarPedidosPorCliente(@PathVariable(value = "idCliente") String idCliente) throws VendaException {
+
+		List<PedidoDTO> listPedidos = pedidoService.buscarPedidosPorCliente(idCliente);
 
 		return new ResponseEntity<List<PedidoDTO>>(listPedidos, HttpStatus.OK);
 	}
@@ -71,7 +78,7 @@ public class PedidoController {
 		return response;
 	}
 	
-	@PostMapping("/{codigoDoPedido}/pagar")
+	@PostMapping("/{codigoDoPedido}/efetuarPedido")
 	public ResponseEntity<PedidoDTO> pagarPedido(@PathVariable(value = "codigoDoPedido") String codigoDoPedido) throws VendaException {
 
 		PedidoDTO pedidoDTO =  pedidoService.pagarPedido(codigoDoPedido);
@@ -79,12 +86,4 @@ public class PedidoController {
 		return new ResponseEntity<PedidoDTO>(pedidoDTO, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/{codigoDoPedido}/efetuar")
-	public ResponseEntity<PedidoDTO> efetuarPedido(@PathVariable(value = "codigoDoPedido") String codigoDoPedido) throws VendaException {
-
-		PedidoDTO pedidoDTO =  pedidoService.efetuarPedido(codigoDoPedido);
-		
-		return new ResponseEntity<PedidoDTO>(pedidoDTO, HttpStatus.CREATED);
-	}
-
 }

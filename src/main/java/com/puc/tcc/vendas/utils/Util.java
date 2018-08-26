@@ -97,4 +97,13 @@ public class Util {
 		return agora.format(formatador); //08/04/14 10:02
 		
 	}
+	
+	public static String dataFuture(int days) {
+		LocalDateTime agora = LocalDateTime.now().plusDays(days);
+		DateTimeFormatter formatador = DateTimeFormatter
+		  .ofLocalizedDateTime(FormatStyle.MEDIUM)
+		  .withLocale(new Locale("pt", "br"));
+		return agora.format(formatador); //08/04/14 10:02
+		
+	}
 }

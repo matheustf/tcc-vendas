@@ -26,4 +26,6 @@ public interface ProdutoService {
 
 	List<ProdutoDTO> buscarProdutosIndisponiveis();
 
+	ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto) throws VendaException;
+
 }

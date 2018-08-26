@@ -68,6 +68,10 @@ public class Produto {
 	@NotNull(message = "Campo Obrigatorio!")
 	private boolean disponivelNoEstoque;
 	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String codigoDoFornecedor;
+	
 	public Produto update(Produto produto, Produto detailsProduto) {
 		produto.setCodigoDoProduto(detailsProduto.getCodigoDoProduto());
 		produto.setNome(detailsProduto.getNome());

@@ -167,4 +167,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 		return produto;
 	}
 
+	@Override
+	public ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto) throws VendaException {
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+		Produto produto = validarProduto(optional);
+		
+		ProdutoDTO produtoDTO = modelMapper().map(produto, ProdutoDTO.class);
+		
+		return produtoDTO;
+	}
+
 }

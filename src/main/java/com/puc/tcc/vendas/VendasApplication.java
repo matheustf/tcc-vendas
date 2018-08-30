@@ -22,6 +22,7 @@ import com.puc.tcc.vendas.entity.Produto;
 import com.puc.tcc.vendas.repository.CategoriaRepository;
 import com.puc.tcc.vendas.repository.PedidoRepository;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
+import com.puc.tcc.vendas.stream.KrarenStorage;
 import com.puc.tcc.vendas.utils.ClearRepositories;
 
 @EnableHystrix
@@ -42,6 +43,9 @@ public class VendasApplication implements CommandLineRunner {
 
 	@Autowired
 	private ClearRepositories clearRepositories;
+	
+	@Autowired
+	KrarenStorage krarenStorage;
 
 	@Override
 	public void run(String... arg0) throws Exception {
@@ -55,10 +59,10 @@ public class VendasApplication implements CommandLineRunner {
 				.dataDeAtualizacao("20/07/2018 09:59:27").build();
 
 		categoriaRepository.saveAll(Arrays.asList(categoriaTenis, categoriaCelular, categoriaCD));
-
-		String urlImagemAdidasPreto = "https://dl.kraken.io/api/3a/01/a0/5a5024d0761de8b9beaadee287/tenis-casual-feminino-adidas-preto-branco-azul-60827494-0-150-07.jpg";
-		String urlImagemNikeBranco = "https://dl.kraken.io/api/39/af/2f/f5c8a857ca9d6e1d573b077903/nike-shox-03-150x150.jpg";
-
+		
+		String urlImagemAdidasPreto = krarenStorage.post("https://br.vmstatic.com/tenis-casual-feminino-adidas-preto-branco-azul-60827494-0-150-07.jpg");
+		String urlImagemNikeBranco = krarenStorage.post("http://lojavirtual.hoteldaweb.com.br/image/cache/catalog/produtos/demo/nike-shox-03-150x150.jpg");
+		
 		Produto tenisAdidasPreto = Produto.builder().codigoDoProduto("PRODUTO-2D50E").categoriaDoProduto("Tenis")
 				.urlImagem(urlImagemAdidasPreto).dataDeCadastro("29/07/2018 09:59:27").nome("Adidas Energy Cloud 2.0")
 				.marca("Adidas").modelo("Preto").valor(new BigDecimal("300.00")).precoUnitario(new BigDecimal("330.00"))

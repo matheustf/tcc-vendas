@@ -38,7 +38,7 @@ public class KrarenStorage {
 		json.put("auth", jsonAuth);
 
 		json.put("url",
-				"https://chrisslade.com/wp-content/uploads/2015/03/AC-DC_with_Chris_Slade_The_Grammys_05-150x150.jpg");
+				urlImagem);
 		json.put("wait", true);
 		
 		ResponseEntity<KrakenImage> response = restTemplate.postForEntity(url, json, KrakenImage.class);

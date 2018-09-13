@@ -27,13 +27,14 @@ import com.puc.tcc.vendas.utils.Util;
 public class ProdutoServiceImpl implements ProdutoService {
 
 	ProdutoRepository produtoRepository;
-	
+
 	KrarenStorage krarenStorage;
-	
+
 	CategoriaService categoriaService;
-	
+
 	@Autowired
-	public ProdutoServiceImpl(ProdutoRepository produtoRepository, KrarenStorage krarenStorage, CategoriaService categoriaService) {
+	public ProdutoServiceImpl(ProdutoRepository produtoRepository, KrarenStorage krarenStorage,
+			CategoriaService categoriaService) {
 		this.produtoRepository = produtoRepository;
 		this.krarenStorage = krarenStorage;
 		this.categoriaService = categoriaService;
@@ -41,51 +42,49 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Override
 	public ProdutoDTO consultar(Long id) throws VendaException {
-		
+
 		Optional<Produto> optional = produtoRepository.findById(id);
 		Produto produto = validarProduto(optional);
-		
+
 		ProdutoDTO produtoDTO = modelMapper().map(produto, ProdutoDTO.class);
-		
+
 		return produtoDTO;
 	}
 
 	@Override
 	public List<ProdutoDTO> buscarTodos() {
 
-		List<Produto> produtos = (List<Produto>) produtoRepository.findAll();
-		
-		for (Iterator<Produto> it = produtos.iterator(); it.hasNext(); ) {  
-			Produto produto = it.next();  
-			if (!produto.isDisponivelNoEstoque())
-			{
+		List<Produto> produtos = (List<Produto>) produtoRepository.findProdutosDisponiveis();
+
+		for (Iterator<Produto> it = produtos.iterator(); it.hasNext();) {
+			Produto produto = it.next();
+			if (!produto.isDisponivelNoEstoque()) {
 				it.remove();
-			}   
+			}
 		}
-	
-		Type listType = new TypeToken<List<ProdutoDTO>>(){}.getType();
+
+		Type listType = new TypeToken<List<ProdutoDTO>>() {
+		}.getType();
 		List<ProdutoDTO> produtosDTO = modelMapper().map(produtos, listType);
-		
 
 		return produtosDTO;
 	}
-	
+
 	@Override
 	public List<ProdutoDTO> buscarProdutosIndisponiveis() {
 
 		List<Produto> produtos = (List<Produto>) produtoRepository.findAll();
-		
-		for (Iterator<Produto> it = produtos.iterator(); it.hasNext(); ) {  
-			Produto produto = it.next();  
-			if (produto.isDisponivelNoEstoque())
-			{
+
+		for (Iterator<Produto> it = produtos.iterator(); it.hasNext();) {
+			Produto produto = it.next();
+			if (produto.isDisponivelNoEstoque()) {
 				it.remove();
-			}   
+			}
 		}
-	
-		Type listType = new TypeToken<List<ProdutoDTO>>(){}.getType();
+
+		Type listType = new TypeToken<List<ProdutoDTO>>() {
+		}.getType();
 		List<ProdutoDTO> produtosDTO = modelMapper().map(produtos, listType);
-		
 
 		return produtosDTO;
 	}
@@ -95,30 +94,32 @@ public class ProdutoServiceImpl implements ProdutoService {
 		Produto produto = modelMapper().map(produtoDTO, Produto.class);
 
 		CategoriaDTO categoria = categoriaService.buscarCategoriaPorNome(produtoDTO.getCategoriaDoProduto());
-		
-		produto.setCodigoDoProduto(Util.gerarCodigo("PRODUTO",5).toUpperCase());
+
+		produto.setCodigoDoProduto(Util.gerarCodigo("PRODUTO", 5).toUpperCase());
 		produto.setDataDeCadastro(Util.dataNow());
-		produto.setPrecoUnitario((produto.getValor().multiply(new BigDecimal(categoria.getTaxaDeCobranca()).add(new BigDecimal("100")))).divide(new BigDecimal("100")));
-		
+		produto.setPrecoUnitario(
+				(produto.getValor().multiply(new BigDecimal(categoria.getTaxaDeCobranca()).add(new BigDecimal("100"))))
+						.divide(new BigDecimal("100")));
+		produto.setAprovado(false);
+
 		String urlImagem = krarenStorage.post(produtoDTO.getUrlImagem());
-		
+
 		produto.setUrlImagem(urlImagem);
 
 		produtoRepository.save(produto);
-		
+
 		ProdutoDTO produtoDTOreturn = modelMapper().map(produto, ProdutoDTO.class);
 		produtoDTOreturn.setCategoria(categoria);
-		
+
 		return produtoDTOreturn;
 	}
 
-
 	@Override
-	public ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTODetails) throws VendaException {
-		
-		Optional<Produto> optional = produtoRepository.findById(id);
+	public ProdutoDTO atualizar(String codigoDoProduto, ProdutoDTO produtoDTODetails) throws VendaException {
+
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 		Produto produto = validarProduto(optional);
-		
+
 		Produto produtoDetails = modelMapper().map(produtoDTODetails, Produto.class);
 
 		produto = produto.update(produto, produtoDetails);
@@ -131,39 +132,39 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public ResponseEntity<ProdutoDTO> deletar(Long id) throws VendaException {
-		
-		Optional<Produto> optional = produtoRepository.findById(id);
-		validarProduto(optional);
-		
-		produtoRepository.deleteById(id);
-		
+	public ResponseEntity<ProdutoDTO> deletar(String codigoDoProduto) throws VendaException {
+
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+		Produto produto = validarProduto(optional);
+
+		produtoRepository.deleteById(produto.getId());
+
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-	
+
 	private Produto validarProduto(Optional<Produto> optional) throws VendaException {
 		return Optional.ofNullable(optional).get()
-		.orElseThrow(() -> new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND));
+				.orElseThrow(() -> new VendaException(HttpStatus.NOT_FOUND, Constants.ITEM_NOT_FOUND));
 	}
 
 	@Override
 	public List<Produto> bucarProdutosPorCodigo(List<String> codigosDosProdutos) {
-		
+
 		return produtoRepository.findByCodigoDoProdutoIn(codigosDosProdutos);
 	}
 
 	@Override
 	public Produto buscarProdutoPorCodigo(String codigoDoProduto) throws VendaException {
-		
+
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
-		
+
 		Produto produto = validarProduto(optional);
-		
+
 		return produto;
 	}
 
@@ -171,10 +172,40 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto) throws VendaException {
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 		Produto produto = validarProduto(optional);
-		
+
 		ProdutoDTO produtoDTO = modelMapper().map(produto, ProdutoDTO.class);
-		
+
 		return produtoDTO;
+	}
+
+	@Override
+	public void disponibilizar(String codigoDoProduto) throws VendaException {
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+
+		Produto produto = validarProduto(optional);
+		produto.setDisponivelNoEstoque(true);
+
+		produtoRepository.save(produto);
+	}
+
+	@Override
+	public void indisponibilizar(String codigoDoProduto) throws VendaException {
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+
+		Produto produto = validarProduto(optional);
+		produto.setDisponivelNoEstoque(false);
+
+		produtoRepository.save(produto);
+	}
+	
+	@Override
+	public void aprovarProduto(String codigoDoProduto) throws VendaException {
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+
+		Produto produto = validarProduto(optional);
+		produto.setAprovado(true);
+
+		produtoRepository.save(produto);
 	}
 
 }

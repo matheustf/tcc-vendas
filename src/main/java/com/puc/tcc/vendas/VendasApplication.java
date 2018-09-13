@@ -87,7 +87,7 @@ public class VendasApplication implements CommandLineRunner {
 		// pedidoRepository.save(pedido1);
 
 	}
-
+/*
 	@Bean
 	public CorsFilter corsFilter() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -105,7 +105,7 @@ public class VendasApplication implements CommandLineRunner {
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
-
+*/
 	public static void main(String[] args) {
 		SpringApplication.run(VendasApplication.class, args);
 	}

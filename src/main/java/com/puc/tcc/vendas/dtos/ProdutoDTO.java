@@ -20,7 +20,7 @@ public class ProdutoDTO {
 	private Long id;
 
 	private String codigoDoProduto;
-
+	
 	@NotNull()
 	private String nome;
 	

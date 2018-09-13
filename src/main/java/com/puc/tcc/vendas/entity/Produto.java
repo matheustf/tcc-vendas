@@ -30,6 +30,10 @@ public class Produto {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
+	private boolean aprovado;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
 	private String nome;
 	
 	@Column(nullable = false)

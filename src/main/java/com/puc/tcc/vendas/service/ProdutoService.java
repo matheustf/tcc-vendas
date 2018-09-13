@@ -14,9 +14,9 @@ public interface ProdutoService {
 	
 	ProdutoDTO incluir(ProdutoDTO produtoDTO) throws VendaException;
 	
-	ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTODetails) throws VendaException;
+	ProdutoDTO atualizar(String codigoDoProduto, ProdutoDTO produtoDTODetails) throws VendaException;
 	
-	ResponseEntity<ProdutoDTO> deletar(Long id) throws VendaException;
+	ResponseEntity<ProdutoDTO> deletar(String codigoDoProduto) throws VendaException;
 
 	List<ProdutoDTO> buscarTodos();
 
@@ -27,5 +27,11 @@ public interface ProdutoService {
 	List<ProdutoDTO> buscarProdutosIndisponiveis();
 
 	ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto) throws VendaException;
+
+	void disponibilizar(String codigoDoProduto) throws VendaException;
+
+	void indisponibilizar(String codigoDoProduto) throws VendaException;
+
+	void aprovarProduto(String codigoDoProduto) throws VendaException;
 
 }

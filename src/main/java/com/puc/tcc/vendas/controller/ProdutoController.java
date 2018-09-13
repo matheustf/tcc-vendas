@@ -71,19 +71,43 @@ public class ProdutoController {
 		ProdutoDTO responseProdutoDTO = produtoService.incluir(produtoDTO);
 		return new ResponseEntity<ProdutoDTO>(responseProdutoDTO, HttpStatus.CREATED);
 	}
+	
+	@PostMapping("/{codigoDoProduto}/disponibilizar")
+	public ResponseEntity<ProdutoDTO> disponibilizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
 
-	@PutMapping("/{id}")
-	public ResponseEntity<ProdutoDTO> atualizar(@PathVariable(value = "id") Long id, @RequestBody @Valid ProdutoDTO produtoDTODetails) throws VendaException {
+		produtoService.disponibilizar(codigoDoProduto);
+		
+		return new ResponseEntity<ProdutoDTO>(HttpStatus.NO_CONTENT);
+	}
+	
+	@PostMapping("/{codigoDoProduto}/indisponibilizar")
+	public ResponseEntity<ProdutoDTO> indisponibilizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
 
-		ProdutoDTO produtoDTO = produtoService.atualizar(id, produtoDTODetails);
+		produtoService.indisponibilizar(codigoDoProduto);
+		
+		return new ResponseEntity<ProdutoDTO>(HttpStatus.NO_CONTENT);
+	}
+	
+	@PostMapping("/{codigoDoProduto}/aprovar")
+	public ResponseEntity<ProdutoDTO> aprovarProduto(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
+		
+		produtoService.aprovarProduto(codigoDoProduto);
+		
+		return new ResponseEntity<ProdutoDTO>(HttpStatus.NO_CONTENT);
+	}
+
+	@PutMapping("/{codigoDoProduto}")
+	public ResponseEntity<ProdutoDTO> atualizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto, @RequestBody @Valid ProdutoDTO produtoDTODetails) throws VendaException {
+
+		ProdutoDTO produtoDTO = produtoService.atualizar(codigoDoProduto, produtoDTODetails);
 
 		return new ResponseEntity<ProdutoDTO>(produtoDTO, HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<ProdutoDTO> deletar(@PathVariable(value = "id") Long id) throws VendaException {
+	@DeleteMapping("/{codigoDoProduto}")
+	public ResponseEntity<ProdutoDTO> deletar(@PathVariable(value = "id") String codigoDoProduto) throws VendaException {
 
-		ResponseEntity<ProdutoDTO> response = produtoService.deletar(id);
+		ResponseEntity<ProdutoDTO> response = produtoService.deletar(codigoDoProduto);
 		
 		return response;
 	}

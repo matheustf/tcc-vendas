@@ -66,12 +66,12 @@ public class VendasApplication implements CommandLineRunner {
 		Produto tenisAdidasPreto = Produto.builder().codigoDoProduto("PRODUTO-2D50E").categoriaDoProduto("Tenis")
 				.urlImagem(urlImagemAdidasPreto).dataDeCadastro("29/07/2018 09:59:27").nome("Adidas Energy Cloud 2.0")
 				.marca("Adidas").modelo("Preto").valor(new BigDecimal("300.00")).precoUnitario(new BigDecimal("330.00"))
-				.diasUteisParaEntrega(5).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-DQSDW").build();
+				.diasUteisParaEntrega(5).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-DQSDW").build();
 
 		Produto tenisNikeBranco = Produto.builder().codigoDoProduto("PRODUTO-6A850").categoriaDoProduto("Tenis")
 				.urlImagem(urlImagemNikeBranco).dataDeCadastro("29/07/2018 09:59:26").nome("Nike Revolution")
 				.marca("Nike").modelo("Branco").valor(new BigDecimal("500.00")).precoUnitario(new BigDecimal("550.00"))
-				.diasUteisParaEntrega(8).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-FEFTR").build();
+				.diasUteisParaEntrega(8).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-FEFTR").build();
 
 		produtoRepository.saveAll(Arrays.asList(tenisAdidasPreto, tenisNikeBranco));
 

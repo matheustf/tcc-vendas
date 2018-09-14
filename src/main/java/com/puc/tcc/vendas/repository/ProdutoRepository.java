@@ -15,7 +15,8 @@ public interface ProdutoRepository extends CrudRepository<Produto, Long> {
 	
 	public Optional<Produto> findByCodigoDoProduto(String codigo);
 	
-	@Query( "SELECT * from Produto p where p.aprovado=1")
+	@Query( value = "SELECT p.* from produto p where p.aprovado=1",
+			nativeQuery = true)
 	public List<Produto> findProdutosDisponiveis();
 
 	//@Query( "SELECT * from Produto p where p.codigoDoProduto in :codigosDosProdutos")

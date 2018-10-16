@@ -15,7 +15,7 @@ public interface ProdutoRepository extends CrudRepository<Produto, Long> {
 	
 	public Optional<Produto> findByCodigoDoProduto(String codigo);
 	
-	@Query( value = "SELECT p.* from produto p where p.aprovado=1",
+	@Query( value = "SELECT p.* from Produto p where p.aprovado=1",
 			nativeQuery = true)
 	public List<Produto> findProdutosDisponiveis();
 
@@ -23,4 +23,16 @@ public interface ProdutoRepository extends CrudRepository<Produto, Long> {
 	//public List<Produto> bucarProdutosPorCodigo(@Param("codigosDosProdutos") List<String> codigosDosProdutos);
 	
 	List<Produto> findByCodigoDoProdutoIn(List<String> codigosDosProdutos);
+	
+	@Query( value = "SELECT p.* from Produto p where p.codigoDoFornecedor=:codigoDoFornecedor",
+			nativeQuery = true)
+	List<Produto> buscarProdutosDoFornecedor(String codigoDoFornecedor);
+	
+	@Query( value = "SELECT p.* from Produto p where p.disponivelNoEstoque = 0 and p.codigoDoFornecedor=:codigoDoFornecedor",
+			nativeQuery = true)
+	List<Produto> buscarProdutosDoFornecedorIndisponiveis(String codigoDoFornecedor);
+	
+	@Query( value = "SELECT p.* from Produto p where p.disponivelNoEstoque = 1 and p.codigoDoFornecedor=:codigoDoFornecedor",
+			nativeQuery = true)
+	List<Produto> buscarProdutosDoFornecedorDisponiveis(String codigoDoFornecedor);
 }

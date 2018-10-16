@@ -10,6 +10,8 @@ public class Constants {
 	
 	public static final String INCONSISTENCIA_NO_PEDIDO = "Inconsistência no Pedido ";
 	
+	public static final String UNAUTHORIZED = "Usuario não autorizado ";
+	
 	public static final String PAGAGAMENTO_NAO_EFETUADO = "Pagamento não efetuado ";
 	
 	public static final String PRODUTO_INDISPONIVEL = "Produto indisponível no momento";

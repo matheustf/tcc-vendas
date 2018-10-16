@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,7 @@ import com.puc.tcc.vendas.service.ProdutoService;
 public class ProdutoController {
 	
 	private ProdutoService produtoService;
+	
 
 	@Autowired
 	public ProdutoController(ProdutoService produtoService) {
@@ -32,7 +34,7 @@ public class ProdutoController {
 	}
 
 	@GetMapping()
-	@RequestMapping("")
+	@RequestMapping("/all")
 	public ResponseEntity<List<ProdutoDTO>> buscarTodos() {
 
 		List<ProdutoDTO> listProdutos = produtoService.buscarTodos();
@@ -42,56 +44,74 @@ public class ProdutoController {
 	
 	@GetMapping()
 	@RequestMapping("/indisponiveis")
-	public ResponseEntity<List<ProdutoDTO>> buscarProdutosIndisponiveis() {
+	public ResponseEntity<List<ProdutoDTO>> buscarProdutosIndisponiveisPorFornecedor(@RequestHeader(value = "x-access-token") String token) throws VendaException {
 
-		List<ProdutoDTO> listProdutos = produtoService.buscarProdutosIndisponiveis();
+		List<ProdutoDTO> listProdutos = produtoService.buscarProdutosIndisponiveisPorFornecedor(token);
 
 		return new ResponseEntity<List<ProdutoDTO>>(listProdutos, HttpStatus.OK);
 	}
+	
+	@GetMapping()
+	@RequestMapping("/disponiveis")
+	public ResponseEntity<List<ProdutoDTO>> buscarProdutosDisponiveisPorFornecedor(@RequestHeader(value = "x-access-token") String token) throws VendaException {
 
-	@GetMapping("/{id}")
-	public ResponseEntity<ProdutoDTO> consultar(@PathVariable(value = "id") Long idProduto) throws VendaException {
+		List<ProdutoDTO> listProdutos = produtoService.buscarProdutosDisponiveisPorFornecedor(token);
 
-		ProdutoDTO produtoDTO = produtoService.consultar(idProduto);
+		return new ResponseEntity<List<ProdutoDTO>>(listProdutos, HttpStatus.OK);
+	}
+	
+	@GetMapping()
+	@RequestMapping("")
+	public ResponseEntity<List<ProdutoDTO>> buscarProdutosPorFornecedor(@RequestHeader(value = "x-access-token") String token) throws VendaException {
 
-		return new ResponseEntity<ProdutoDTO>(produtoDTO, HttpStatus.OK);
+		List<ProdutoDTO> listProdutos = produtoService.buscarProdutosPorFornecedor(token);
+
+		return new ResponseEntity<List<ProdutoDTO>>(listProdutos, HttpStatus.OK);
 	}
 	
 	@GetMapping("/codigoDoProduto/{codigoDoProduto}")
-	public ResponseEntity<ProdutoDTO> consultarPorCodigoDoProduto(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
+	public ResponseEntity<ProdutoDTO> consultarProduto(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
 
-		ProdutoDTO produtoDTO = produtoService.consultarPorCodigoDoProduto(codigoDoProduto);
+		ProdutoDTO produtoDTO = produtoService.consultarProduto(codigoDoProduto);
+
+		return new ResponseEntity<ProdutoDTO>(produtoDTO, HttpStatus.OK);
+	}
+
+	@GetMapping("/{codigoDoProduto}")
+	public ResponseEntity<ProdutoDTO> consultarProdutoFornecedor(@PathVariable(value = "codigoDoProduto") String codigoDoProduto, @RequestHeader(value = "x-access-token") String token) throws VendaException {
+
+		ProdutoDTO produtoDTO = produtoService.consultarPorCodigoDoProduto(codigoDoProduto, token);
 
 		return new ResponseEntity<ProdutoDTO>(produtoDTO, HttpStatus.OK);
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ProdutoDTO> incluir(@RequestBody @Valid ProdutoDTO produtoDTO) throws VendaException {
+	public ResponseEntity<ProdutoDTO> incluir(@RequestBody @Valid ProdutoDTO produtoDTO, @RequestHeader(value = "x-access-token") String token) throws VendaException {
 
-		ProdutoDTO responseProdutoDTO = produtoService.incluir(produtoDTO);
+		ProdutoDTO responseProdutoDTO = produtoService.incluir(produtoDTO, token);
 		return new ResponseEntity<ProdutoDTO>(responseProdutoDTO, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/{codigoDoProduto}/disponibilizar")
-	public ResponseEntity<ProdutoDTO> disponibilizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
-
-		produtoService.disponibilizar(codigoDoProduto);
+	public ResponseEntity<ProdutoDTO> disponibilizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto, @RequestHeader(value = "x-access-token") String token) throws VendaException {
+		
+		produtoService.disponibilizar(codigoDoProduto, token);
 		
 		return new ResponseEntity<ProdutoDTO>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PostMapping("/{codigoDoProduto}/indisponibilizar")
-	public ResponseEntity<ProdutoDTO> indisponibilizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
+	public ResponseEntity<ProdutoDTO> indisponibilizar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto, @RequestHeader(value = "x-access-token") String token) throws VendaException {
 
-		produtoService.indisponibilizar(codigoDoProduto);
+		produtoService.indisponibilizar(codigoDoProduto, token);
 		
 		return new ResponseEntity<ProdutoDTO>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PostMapping("/{codigoDoProduto}/aprovar")
-	public ResponseEntity<ProdutoDTO> aprovarProduto(@PathVariable(value = "codigoDoProduto") String codigoDoProduto) throws VendaException {
+	public ResponseEntity<ProdutoDTO> aprovarProduto(@PathVariable(value = "codigoDoProduto") String codigoDoProduto, @RequestHeader(value = "x-access-token") String token) throws VendaException {
 		
-		produtoService.aprovarProduto(codigoDoProduto);
+		produtoService.aprovarProduto(codigoDoProduto, token);
 		
 		return new ResponseEntity<ProdutoDTO>(HttpStatus.NO_CONTENT);
 	}
@@ -105,9 +125,9 @@ public class ProdutoController {
 	}
 
 	@DeleteMapping("/{codigoDoProduto}")
-	public ResponseEntity<ProdutoDTO> deletar(@PathVariable(value = "id") String codigoDoProduto) throws VendaException {
+	public ResponseEntity<ProdutoDTO> deletar(@PathVariable(value = "codigoDoProduto") String codigoDoProduto, @RequestHeader(value = "x-access-token") String token) throws VendaException {
 
-		ResponseEntity<ProdutoDTO> response = produtoService.deletar(codigoDoProduto);
+		ResponseEntity<ProdutoDTO> response = produtoService.deletar(codigoDoProduto, token);
 		
 		return response;
 	}

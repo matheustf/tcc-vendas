@@ -68,7 +68,7 @@ public class Produto {
 	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDeCadastro;
 	
-	@Column(nullable = false)
+	@Column(name="disponivelNoEstoque", nullable=false)
 	@NotNull(message = "Campo Obrigatorio!")
 	private boolean disponivelNoEstoque;
 	

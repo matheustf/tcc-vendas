@@ -12,11 +12,11 @@ public interface ProdutoService {
 	
 	ProdutoDTO consultar(Long id) throws VendaException;
 	
-	ProdutoDTO incluir(ProdutoDTO produtoDTO) throws VendaException;
+	ProdutoDTO incluir(ProdutoDTO produtoDTO, String token) throws VendaException;
 	
 	ProdutoDTO atualizar(String codigoDoProduto, ProdutoDTO produtoDTODetails) throws VendaException;
 	
-	ResponseEntity<ProdutoDTO> deletar(String codigoDoProduto) throws VendaException;
+	ResponseEntity<ProdutoDTO> deletar(String codigoDoProduto, String token) throws VendaException;
 
 	List<ProdutoDTO> buscarTodos();
 
@@ -24,14 +24,20 @@ public interface ProdutoService {
 
 	Produto buscarProdutoPorCodigo(String codigoDoProduto) throws VendaException;
 
-	List<ProdutoDTO> buscarProdutosIndisponiveis();
+	List<ProdutoDTO> buscarProdutosIndisponiveisPorFornecedor(String token) throws VendaException;
 
-	ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto) throws VendaException;
+	ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto, String token) throws VendaException;
 
-	void disponibilizar(String codigoDoProduto) throws VendaException;
+	void disponibilizar(String codigoDoProduto, String token) throws VendaException;
 
-	void indisponibilizar(String codigoDoProduto) throws VendaException;
+	void aprovarProduto(String codigoDoProduto, String token) throws VendaException;
 
-	void aprovarProduto(String codigoDoProduto) throws VendaException;
+	void indisponibilizar(String codigoDoProduto, String token) throws VendaException;
+
+	List<ProdutoDTO> buscarProdutosDisponiveisPorFornecedor(String token) throws VendaException;
+
+	List<ProdutoDTO> buscarProdutosPorFornecedor(String token) throws VendaException;
+
+	ProdutoDTO consultarProduto(String codigoDoProduto) throws VendaException;
 
 }

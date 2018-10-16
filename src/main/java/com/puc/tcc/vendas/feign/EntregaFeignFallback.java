@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.puc.tcc.vendas.feign.dto.EntregaFeignDTO;
+
 //import com.puc.tcc.scheduler.enums.StatusDaEntrega;
 
 import lombok.AllArgsConstructor;

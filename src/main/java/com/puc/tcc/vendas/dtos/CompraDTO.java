@@ -2,6 +2,7 @@ package com.puc.tcc.vendas.dtos;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +24,19 @@ public class CompraDTO {
 	private String codigoDoProduto;
 	
 	@NotNull()
+	private String nomeDoProduto;
+	
+	@NotNull()
+	private String marca;
+	
+	@NotNull()
+	private String modelo;
+	
+	@NotNull()
 	private String idFornecedor;
+	
+	@NotNull()
+	private String urlFornecedor;
 
 	@NotNull()
 	private int quantidade;

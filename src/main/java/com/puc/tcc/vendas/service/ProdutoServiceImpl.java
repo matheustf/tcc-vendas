@@ -22,6 +22,7 @@ import com.puc.tcc.vendas.exceptions.VendaException;
 import com.puc.tcc.vendas.repository.ProdutoRepository;
 import com.puc.tcc.vendas.stream.KrarenStorage;
 import com.puc.tcc.vendas.utils.Util;
+import com.puc.tcc.vendas.validate.TokenValidate;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
@@ -31,11 +32,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 	KrarenStorage krarenStorage;
 
 	CategoriaService categoriaService;
+	
+	TokenValidate tokenValidate;
 
 	@Autowired
-	public ProdutoServiceImpl(ProdutoRepository produtoRepository, KrarenStorage krarenStorage,
+	public ProdutoServiceImpl(ProdutoRepository produtoRepository, TokenValidate tokenValidate, KrarenStorage krarenStorage,
 			CategoriaService categoriaService) {
 		this.produtoRepository = produtoRepository;
+		this.tokenValidate = tokenValidate;
 		this.krarenStorage = krarenStorage;
 		this.categoriaService = categoriaService;
 	}
@@ -53,7 +57,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Override
 	public List<ProdutoDTO> buscarTodos() {
-
+		
 		List<Produto> produtos = (List<Produto>) produtoRepository.findProdutosDisponiveis();
 
 		for (Iterator<Produto> it = produtos.iterator(); it.hasNext();) {
@@ -71,16 +75,11 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public List<ProdutoDTO> buscarProdutosIndisponiveis() {
+	public List<ProdutoDTO> buscarProdutosIndisponiveisPorFornecedor(String token) throws VendaException {
+		
+		String codigoDoFornecedor = Util.getPagameterToken(token, "idCadastro");
 
-		List<Produto> produtos = (List<Produto>) produtoRepository.findAll();
-
-		for (Iterator<Produto> it = produtos.iterator(); it.hasNext();) {
-			Produto produto = it.next();
-			if (produto.isDisponivelNoEstoque()) {
-				it.remove();
-			}
-		}
+		List<Produto> produtos = (List<Produto>) produtoRepository.buscarProdutosDoFornecedorIndisponiveis(codigoDoFornecedor);
 
 		Type listType = new TypeToken<List<ProdutoDTO>>() {
 		}.getType();
@@ -90,8 +89,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public ProdutoDTO incluir(ProdutoDTO produtoDTO) throws VendaException {
+	public ProdutoDTO incluir(ProdutoDTO produtoDTO, String token) throws VendaException {
 		Produto produto = modelMapper().map(produtoDTO, Produto.class);
+		
+		String codigoDoFornecedor = Util.getPagameterToken(token, "idCadastro");
+		
+		produto.setCodigoDoFornecedor(codigoDoFornecedor);
 
 		CategoriaDTO categoria = categoriaService.buscarCategoriaPorNome(produtoDTO.getCategoriaDoProduto());
 
@@ -132,7 +135,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public ResponseEntity<ProdutoDTO> deletar(String codigoDoProduto) throws VendaException {
+	public ResponseEntity<ProdutoDTO> deletar(String codigoDoProduto, String token) throws VendaException {
 
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 		Produto produto = validarProduto(optional);
@@ -169,43 +172,90 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto) throws VendaException {
+	public ProdutoDTO consultarPorCodigoDoProduto(String codigoDoProduto, String token) throws VendaException {
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 		Produto produto = validarProduto(optional);
+		
+		tokenValidate.tokenValidateFornecedor(token, produto.getCodigoDoFornecedor());
 
+		ProdutoDTO produtoDTO = modelMapper().map(produto, ProdutoDTO.class);
+
+		return produtoDTO;
+	}
+	
+	@Override
+	public ProdutoDTO consultarProduto(String codigoDoProduto) throws VendaException {
+		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
+		Produto produto = validarProduto(optional);
+		
 		ProdutoDTO produtoDTO = modelMapper().map(produto, ProdutoDTO.class);
 
 		return produtoDTO;
 	}
 
 	@Override
-	public void disponibilizar(String codigoDoProduto) throws VendaException {
+	public void disponibilizar(String codigoDoProduto, String token) throws VendaException {
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 
 		Produto produto = validarProduto(optional);
+		
+		tokenValidate.tokenValidateFornecedor(token, produto.getCodigoDoFornecedor());
 		produto.setDisponivelNoEstoque(true);
 
 		produtoRepository.save(produto);
 	}
 
 	@Override
-	public void indisponibilizar(String codigoDoProduto) throws VendaException {
+	public void indisponibilizar(String codigoDoProduto, String token) throws VendaException {
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 
 		Produto produto = validarProduto(optional);
+
+		tokenValidate.tokenValidateFornecedor(token, produto.getCodigoDoFornecedor());
 		produto.setDisponivelNoEstoque(false);
 
 		produtoRepository.save(produto);
 	}
 	
 	@Override
-	public void aprovarProduto(String codigoDoProduto) throws VendaException {
+	public void aprovarProduto(String codigoDoProduto, String token) throws VendaException {
 		Optional<Produto> optional = produtoRepository.findByCodigoDoProduto(codigoDoProduto);
 
 		Produto produto = validarProduto(optional);
+		
+		//TODO
+
 		produto.setAprovado(true);
 
 		produtoRepository.save(produto);
+	}
+
+	@Override
+	public List<ProdutoDTO> buscarProdutosDisponiveisPorFornecedor(String token) throws VendaException {
+		
+		String codigoDoFornecedor = Util.getPagameterToken(token, "idCadastro");
+
+		List<Produto> produtos = (List<Produto>) produtoRepository.buscarProdutosDoFornecedorDisponiveis(codigoDoFornecedor);
+
+		Type listType = new TypeToken<List<ProdutoDTO>>() {
+		}.getType();
+		List<ProdutoDTO> produtosDTO = modelMapper().map(produtos, listType);
+
+		return produtosDTO;
+	}
+
+	@Override
+	public List<ProdutoDTO> buscarProdutosPorFornecedor(String token) throws VendaException {
+		
+		String codigoDoFornecedor = Util.getPagameterToken(token, "idCadastro");
+
+		List<Produto> produtos = (List<Produto>) produtoRepository.buscarProdutosDoFornecedor(codigoDoFornecedor);
+
+		Type listType = new TypeToken<List<ProdutoDTO>>() {
+		}.getType();
+		List<ProdutoDTO> produtosDTO = modelMapper().map(produtos, listType);
+
+		return produtosDTO;
 	}
 
 }

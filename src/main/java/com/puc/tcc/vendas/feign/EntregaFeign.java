@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.puc.tcc.vendas.feign.dto.EntregaFeignDTO;
+
 @FeignClient(value = "microservice-entrega", fallback = EntregaFeignFallback.class)
 public interface EntregaFeign {
 

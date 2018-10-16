@@ -42,6 +42,12 @@ public class Endereco {
 	@Column(nullable = false)
 	private String estado;
 	
+	@Column(nullable = false)
+	private String pais;
+	
+	@Column(nullable = false)
+	private String destinatario;
+	
 	public Endereco update(Endereco endereco, Endereco enderecoDetails) {
 		endereco.setCep(enderecoDetails.getCep());
 		endereco.setLogradouro(enderecoDetails.getLogradouro());

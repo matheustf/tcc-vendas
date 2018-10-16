@@ -35,4 +35,9 @@ public class EnderecoDTO {
 	@NotNull(message = "Campo Obrigatorio!")
 	private String estado;
 
+	@NotNull(message = "Campo Obrigatorio!")
+	private String pais;
+	
+	@NotNull
+	private String destinatario;
 }

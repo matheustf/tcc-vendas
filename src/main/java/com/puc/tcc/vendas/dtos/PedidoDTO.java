@@ -3,6 +3,7 @@ package com.puc.tcc.vendas.dtos;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +26,11 @@ public class PedidoDTO {
 	@NotNull()
 	private String idCliente;
 	
+	@NotNull()
+	private String nomeDoCliente;
+	
+	private String emailCliente;
+	
 	private String dataDoPedido;
 	
 	@NotNull()
@@ -41,7 +47,7 @@ public class PedidoDTO {
 	
 	private String estimativaDeEntrega;
 	
-	private List<EnderecoDTO> enderecoDeEntrega;
+	private EnderecoDTO endereco;
 	
 	
 }

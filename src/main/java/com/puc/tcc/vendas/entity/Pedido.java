@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.puc.tcc.vendas.enums.FormaDePagamento;
@@ -46,6 +47,14 @@ public class Pedido implements Serializable{
 	@NotNull(message = "Campo Obrigatorio!")
 	private String idCliente;
 	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String nomeDoCliente;
+	
+	@Column(nullable = false)
+	@NotNull(message = "Campo Obrigatorio!")
+	private String emailCliente;
+	
 	@NotNull(message = "Campo Obrigatorio!")
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo", columnDefinition = "enum('CRIADO','AGUARDANDO_PAGAMENTO', 'PAGO','EFETUADO')")
@@ -63,6 +72,9 @@ public class Pedido implements Serializable{
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")
 	private String dataDoPedido;
+	
+	@OneToOne(cascade = {CascadeType.ALL})
+	private Endereco endereco;
 
 	@Column(nullable = false)
 	@NotNull(message = "Campo Obrigatorio!")

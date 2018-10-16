@@ -21,7 +21,7 @@ import com.puc.tcc.vendas.entity.Pedido;
 import com.puc.tcc.vendas.enums.StatusDoPedido;
 import com.puc.tcc.vendas.exceptions.VendaException;
 import com.puc.tcc.vendas.feign.EntregaFeign;
-import com.puc.tcc.vendas.feign.EntregaFeignDTO;
+import com.puc.tcc.vendas.feign.dto.EntregaFeignDTO;
 import com.puc.tcc.vendas.rabbitmq.RabbitMQComponent;
 import com.puc.tcc.vendas.repository.PedidoRepository;
 import com.puc.tcc.vendas.utils.Util;
@@ -36,7 +36,7 @@ public class PedidoServiceImpl implements PedidoService {
 	RabbitMQComponent rabbitMQComponent;
 
 	EntregaFeign entregaFeign;
-
+	
 	@Autowired
 	public PedidoServiceImpl(PedidoRepository pedidoRepository, CompraService compraService, EntregaFeign entregaFeign,
 			RabbitMQComponent rabbitMQComponent) {
@@ -164,26 +164,30 @@ public class PedidoServiceImpl implements PedidoService {
 		pedido.setStatusDoPedido(StatusDoPedido.EFETUADO);
 		
 		
-		
 		List<EntregaFeignDTO> entregas = new ArrayList<>();
 		
 		for (Compra compra : pedido.getCompras()) {
 			
 		EntregaFeignDTO entrega = EntregaFeignDTO.builder()
 				.idCliente(pedido.getIdCliente())
+				.emailCliente(pedido.getEmailCliente())
+				.nomeDoCliente(pedido.getNomeDoCliente())
 				.idFornecedor(compra.getIdFornecedor())
 				.idCompra(compra.getCodigoDaCompra())
 				.estimativaDeEntrega(pedido.getEstimativaDeEntrega())
-				
+				.endereco(pedido.getEndereco())
 				.statusDaEntrega("EM_SEPARACAO")
-				
+				.nomeDoProduto(compra.getNomeDoProduto())
+				.modelo(compra.getModelo())
+				.quantidade(compra.getQuantidade())
+				.marca(compra.getMarca())
+				.urlFornecedor(compra.getUrlFornecedor())
 				.build();
 		
 		entregas.add(entrega);
 		
 		}
 		
-		//TODO INSERT MAIS DE UMA ENTREGA AO MESMO TEMPO
 		entregaFeign.inserirEntrega(entregas);
 
 		pedidoRepository.save(pedido);

@@ -50,6 +50,5 @@ public class ProdutoDTO {
 	
 	private CategoriaDTO categoria;
 	
-	@NotNull()
 	private String codigoDoFornecedor;
 }

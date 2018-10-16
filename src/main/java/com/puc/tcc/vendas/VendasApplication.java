@@ -60,8 +60,18 @@ public class VendasApplication implements CommandLineRunner {
 
 		categoriaRepository.saveAll(Arrays.asList(categoriaTenis, categoriaCelular, categoriaCD));
 		
-		String urlImagemAdidasPreto = krarenStorage.post("https://br.vmstatic.com/tenis-casual-feminino-adidas-preto-branco-azul-60827494-0-150-07.jpg");
-		String urlImagemNikeBranco = krarenStorage.post("http://lojavirtual.hoteldaweb.com.br/image/cache/catalog/produtos/demo/nike-shox-03-150x150.jpg");
+		String urlImagemAdidasPreto = krarenStorage
+				.post("https://br.vmstatic.com/tenis-casual-feminino-adidas-preto-branco-azul-60827494-0-150-07.jpg");
+		String urlImagemNikeBranco = krarenStorage
+				.post("http://lojavirtual.hoteldaweb.com.br/image/cache/catalog/produtos/demo/nike-shox-03-150x150.jpg");
+		String urlImagemAsicsResolution = krarenStorage
+				.post("https://utennis.com.br/media/catalog/product/cache/1/small_image/150x/9df78eab33525d08d6e5fb8d27136e95/t/_/t_nis_asics_gel_resolution_6_masculino_vermelho_e_preto.jpeg");
+		String urlImagemAsicsEvate = krarenStorage
+				.post("https://nosushitem.com.br/wp-content/uploads/tenis-asics-gel-evate-3-15406-1-700x600-150x150.jpg");
+		String urlImagemOlympikusCircuit = krarenStorage
+				.post("https://dicasfemininas.com.br/wp-content/uploads/2018/09/novo-Olympikus-2018-150x150.jpg");
+		String urlImagemOlympikusIntense = krarenStorage
+				.post("https://images-shoptime.b2w.io/produtos/01/00/sku/38460/9/38460926P1.jpg");
 		
 		Produto tenisAdidasPreto = Produto.builder().codigoDoProduto("PRODUTO-2D50E").categoriaDoProduto("Tenis")
 				.urlImagem(urlImagemAdidasPreto).dataDeCadastro("29/07/2018 09:59:27").nome("Adidas Energy Cloud 2.0")
@@ -73,7 +83,35 @@ public class VendasApplication implements CommandLineRunner {
 				.marca("Nike").modelo("Branco").valor(new BigDecimal("500.00")).precoUnitario(new BigDecimal("550.00"))
 				.diasUteisParaEntrega(8).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-FEFTR").build();
 
-		produtoRepository.saveAll(Arrays.asList(tenisAdidasPreto, tenisNikeBranco));
+		Produto tenisAsicsResolution = Produto.builder().codigoDoProduto("PRODUTO-7DD3M").categoriaDoProduto("Tenis")
+				.urlImagem(urlImagemAsicsResolution).dataDeCadastro("29/07/2018 09:59:27").nome("Asics Resolution")
+				.marca("Asics").modelo("Vermelho").valor(new BigDecimal("450.00")).precoUnitario(new BigDecimal("495.00"))
+				.diasUteisParaEntrega(2).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-GOEJM").build();
+
+		Produto tenisAsicsEvate= Produto.builder().codigoDoProduto("PRODUTO-5KM4N").categoriaDoProduto("Tenis")
+				.urlImagem(urlImagemAsicsEvate).dataDeCadastro("29/07/2018 09:59:27").nome("Asics Evate")
+				.marca("Asics").modelo("Preto/Azul").valor(new BigDecimal("500.00")).precoUnitario(new BigDecimal("550.00"))
+				.diasUteisParaEntrega(9).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-GOEJM").build();
+		
+		Produto tenisOlympikusCircuit = Produto.builder().codigoDoProduto("PRODUTO-98DSF").categoriaDoProduto("Tenis")
+				.urlImagem(urlImagemOlympikusCircuit).dataDeCadastro("29/07/2018 09:59:27").nome("Olympikus Circuit")
+				.marca("Olympikus").modelo("Prata/Vermelho").valor(new BigDecimal("200.00")).precoUnitario(new BigDecimal("220.00"))
+				.diasUteisParaEntrega(4).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-DASO2").build();
+		
+		Produto tenisOlympikusIntense = Produto.builder().codigoDoProduto("PRODUTO-EWEL3").categoriaDoProduto("Tenis")
+				.urlImagem(urlImagemOlympikusIntense).dataDeCadastro("29/07/2018 09:59:27").nome("Olympikus Intense")
+				.marca("Olympikus").modelo("Azul Claro").valor(new BigDecimal("300.00")).precoUnitario(new BigDecimal("330.00"))
+				.diasUteisParaEntrega(4).aprovado(true).disponivelNoEstoque(true).codigoDoFornecedor("FORNECEDOR-DASO2").build();
+
+		produtoRepository.saveAll(
+				Arrays.asList(
+						tenisAdidasPreto, 
+						tenisNikeBranco,
+						tenisAsicsResolution,
+						tenisAsicsEvate,
+						tenisOlympikusCircuit,
+						tenisOlympikusIntense
+				));
 
 		// Compra compra1 =
 		// Compra.builder().codigoDoProduto("2D50E4AC-0FEC").quantidade(3).build();
